@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:signova/screens/chatbotscreen.dart';
 import 'package:signova/screens/communicationscreen.dart';
 import 'package:signova/screens/homecommunityscreen.dart';
@@ -22,11 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Signova',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/',
+      initialRoute: '/home-community',
       routes: {
         '/': (context) => LandingScreen(),
         '/login': (context) => LoginScreen(),
