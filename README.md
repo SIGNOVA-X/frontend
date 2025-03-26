@@ -1,6 +1,6 @@
 # signova
 
-A new Flutter project.
+A new Flutter project to help the Deaf community.
 
 ## Getting Started
 
