@@ -1,47 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:toastification/toastification.dart';
 
-Widget bottomnavbar(context) {
-  return BottomNavigationBar(
-    onTap: (index) {
-      if (index == 0) {
-        Navigator.pushNamed(context, '/home-community');
-      } else if (index == 1) {
-        Navigator.pushNamed(context, '/');
-      } else if (index == 2) {
-        Navigator.pushNamed(context, '/communication');
-      } else if (index == 3) {
-        Navigator.pushNamed(context, '/chatbot');
-      } else if (index == 4) {
-        Navigator.pushNamed(context, '/profile');
-      }
+Widget gbottomnavbar(
+  BuildContext context,
+  int selectedIndex,
+  Function(int) onTabChange,
+) {
+  return GNav(
+    gap: 2,
+    activeColor: selectedIndex == 1 ? Colors.black : Colors.white,
+    color: Color.fromRGBO(140, 58, 207, 1),
+    tabBackgroundColor:
+        selectedIndex == 1 ? Colors.grey : Color.fromRGBO(140, 58, 207, 1),
+
+    padding: EdgeInsets.all(12),
+    selectedIndex: selectedIndex,
+    onTabChange: (index) {
+      onTabChange(index);
     },
-    backgroundColor: Colors.white,
-    selectedItemColor: Color.fromRGBO(88, 41, 122, 1.0),
-    selectedIconTheme: IconThemeData(color: Color.fromRGBO(88, 41, 122, 1.0)),
-    showSelectedLabels: true,
-    showUnselectedLabels: false,
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.group, color: Colors.black),
-        label: "community",
+    tabs: [
+      GButton(icon: Icons.group, text: "Community"),
+      GButton(
+        icon: Icons.video_call_outlined,
+        text: "Meet",
+        iconColor:
+            selectedIndex == 1
+                ? Colors.black
+                : Colors.grey, // Make it look disabled
+        textColor: selectedIndex == 1 ? Colors.black : Colors.grey,
+        onPressed: () {
+          toastification.show(
+            context: context,
+            title: Text("This feature is currently under progress!"),
+            alignment: Alignment.topCenter,
+            style: ToastificationStyle.fillColored,
+            primaryColor: Color.fromRGBO(0, 0, 0, 1),
+            backgroundColor: Colors.white,
+            autoCloseDuration: Duration(seconds: 2),
+          );
+        },
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.video_call_outlined, color: Colors.black),
-        label: "meet",
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Iconsax.microphone_bold, color: Colors.black),
-        label: "communication",
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(AntDesign.smile_outline, color: Colors.black),
-        label: "chatbot",
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Iconsax.profile_add_outline, color: Colors.black),
-        label: "profile",
-      ),
+      GButton(icon: Iconsax.microphone_bold, text: "Communicate"),
+      GButton(icon: AntDesign.smile_outline, text: "Chatbot"),
+      GButton(icon: Iconsax.profile_circle_outline, text: "Profile"),
     ],
   );
 }

@@ -12,6 +12,27 @@ class HomeCommunityScreen extends StatefulWidget {
 
 class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
   final List<bool> isSelected = [true, false];
+  int _selectedIndex = 0;
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Navigate based on selected index
+    switch (index) {
+      case 0:
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/communication');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/chatbot');
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double sizeHeight = MediaQuery.of(context).size.height;
@@ -56,7 +77,7 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-                  child: Text("New"),
+                  child: Text("New", style: GoogleFonts.inter()),
                 ),
               ],
             ),
@@ -86,7 +107,10 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: bottomnavbar(context),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
+        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
+      ),
     );
   }
 }

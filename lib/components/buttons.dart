@@ -2,12 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-Widget circleButton(sizeHeight, sizeWidth, imagestring) {
+Widget circleButton(sizeHeight, sizeWidth, imagestring, bordercheck) {
   return Container(
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       color: Colors.transparent,
-      border: Border.all(color: Colors.grey, width: 1.0),
+      border:
+          bordercheck ? Border.all(color: Colors.grey, width: 1.0) : Border(),
+      // borderRadius: BorderRadius.circular(12),
+    ),
+    child: Padding(
+      padding: EdgeInsets.all(sizeHeight * sizeWidth / 300000),
+      child: Image.asset(
+        imagestring,
+        fit: BoxFit.fill,
+        height: sizeHeight / 13,
+        width: sizeWidth / 2,
+      ),
+    ),
+  );
+}
+
+Widget communityprofileimage(sizeHeight, sizeWidth, imagestring) {
+  return Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.transparent,
       // borderRadius: BorderRadius.circular(12),
     ),
     child: Padding(
@@ -15,7 +35,8 @@ Widget circleButton(sizeHeight, sizeWidth, imagestring) {
       child: Image.asset(
         imagestring,
         fit: BoxFit.fill,
-        height: sizeHeight / 16,
+        height: sizeHeight / 14,
+        width: sizeWidth / 6,
       ),
     ),
   );
@@ -33,9 +54,9 @@ Widget communitymessages(sizeHeight, sizeWidth) {
       color: Colors.white,
       boxShadow: [
         BoxShadow(
-          color: Colors.black87,
-          blurRadius: sizeHeight / 150,
-          offset: Offset(0, 1),
+          color: Color.fromRGBO(0, 0, 0, 0.2),
+          blurRadius: sizeHeight / 200,
+          offset: Offset(0, 2.5),
         ),
       ],
     ),
@@ -43,7 +64,7 @@ Widget communitymessages(sizeHeight, sizeWidth) {
       children: [
         Row(
           children: [
-            circleButton(sizeHeight, sizeWidth, 'assets/profile.png'),
+            communityprofileimage(sizeHeight, sizeWidth, 'assets/profile.png'),
             SizedBox(width: sizeWidth / 35),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
