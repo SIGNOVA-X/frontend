@@ -6,6 +6,8 @@ import 'package:signova/screens/landingscreen.dart';
 import 'package:signova/screens/loginscreen.dart';
 import 'package:signova/screens/profilescreen.dart';
 import 'package:signova/screens/signupscreen.dart';
+import 'package:signova/screens/formscreen.dart';
+import 'package:signova/screens/splashscreen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -14,7 +16,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,8 +24,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/home-community',
+      initialRoute: '/splash',
       routes: {
+        '/splash': (context) => SplashScreen(),
         '/': (context) => LandingScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
@@ -32,7 +34,10 @@ class MyApp extends StatelessWidget {
         '/communication': (context) => CommunicationScreen(),
         '/profile': (context) => ProfileScreen(),
         '/chatbot': (context) => ChatbotScreen(),
+        '/form': (context) => Formscreen(),
       },
     );
   }
 }
+
+

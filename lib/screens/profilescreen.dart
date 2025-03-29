@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: circleButton(
                     sizeHeight * 2,
                     sizeWidth * 2,
-                    'assets/profile.png',
+                    'assets/images/profile.png',
                     false,
                   ),
                 ),
