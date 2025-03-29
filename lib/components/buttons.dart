@@ -64,7 +64,7 @@ Widget communitymessages(sizeHeight, sizeWidth) {
       children: [
         Row(
           children: [
-            communityprofileimage(sizeHeight, sizeWidth, 'assets/profile.png'),
+            communityprofileimage(sizeHeight, sizeWidth, 'assets/images/profile.png'),
             SizedBox(width: sizeWidth / 35),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -111,4 +111,56 @@ Widget communitymessages(sizeHeight, sizeWidth) {
       ],
     ),
   );
+}
+
+  Widget _buildSocialButton(BuildContext context, String assetPath, {IconData? icon}) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF474747).withOpacity(0.5), // Button color with 50% opacity
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Rounded rectangle
+        ),
+        minimumSize: Size(MediaQuery.of(context).size.width * 0.4, MediaQuery.of(context).size.height * 0.05), // Dynamic button size
+      ),
+      child: assetPath.isNotEmpty
+          ? Image.asset(assetPath, height: 24, width: 24) // Google image
+          : Icon(icon, color: Colors.white, size: 35), // Facebook icon
+    );
+  }
+
+   Widget buildSignupLoginButton(BuildContext context, double screenWidth, double screenHeight, String displaytext, String route) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, route);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFAA69E3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
+      ),
+      child: Text(
+        displaytext,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w700,
+          fontSize: 20,
+          color: Color(0xFFFFFFFF),
+        ),
+      ),
+    );
+  }
+
+  Widget buildSocialButtons(BuildContext context, double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildSocialButton(context, 'assets/images/google.png'),
+        SizedBox(width: screenWidth * 0.02),
+        _buildSocialButton(context, '', icon: Icons.facebook),
+      ],
+    );
+  
 }
