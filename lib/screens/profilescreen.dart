@@ -194,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     top: sizeHeight / 50,
                     right: sizeWidth / 20,
                     left: sizeWidth / 20,
-                    bottom: sizeHeight / 70,
+                    bottom: sizeHeight / 180,
                   ),
                   padding: EdgeInsets.all(sizeHeight / 50),
                   decoration: BoxDecoration(

@@ -11,6 +11,7 @@ class CommunicationScreen extends StatefulWidget {
 
 class _CommunicationScreenState extends State<CommunicationScreen> {
   final List<bool> isSelectedLeft = [true, false];
+  final List<bool> isSelectedRight = [true, false];
   int _selectedIndex = 2;
   void _onTabChange(int index) {
     setState(() {
@@ -62,11 +63,11 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
                   borderRadius: BorderRadius.circular(15.0),
                   onPressed: (int index) {
                     setState(() {
-                      isSelectedLeft[index] = true;
-                      isSelectedLeft[(index - 1).abs()] = false;
+                      isSelectedRight[index] = true;
+                      isSelectedRight[(index - 1).abs()] = false;
                     });
                   },
-                  isSelected: isSelectedLeft,
+                  isSelected: isSelectedRight,
                   children: [
                     Padding(
                       padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),

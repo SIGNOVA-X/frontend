@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:signova/screens/chatbotscreen.dart';
 import 'package:signova/screens/communicationscreen.dart';
 import 'package:signova/screens/homecommunityscreen.dart';
@@ -8,6 +9,7 @@ import 'package:signova/screens/profilescreen.dart';
 import 'package:signova/screens/signupscreen.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/home-community',
+      initialRoute: '/chatbot',
       routes: {
         '/': (context) => LandingScreen(),
         '/login': (context) => LoginScreen(),
