@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="signova"
-        android:name="${applicationName}"
+        android:label="Signova"
+        android:name="Signova"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
