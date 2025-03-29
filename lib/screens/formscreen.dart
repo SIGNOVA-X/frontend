@@ -21,14 +21,19 @@ class _FormscreenState extends State<Formscreen> {
           buildHeader(screenHeight, screenWidth),
           Align(
             alignment: Alignment.center,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: screenHeight * 0.1, // 10% of screen height
-                  left: screenWidth * 0.05, // 5% of screen width
-                  right: screenWidth * 0.05, // 5% of screen width
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: screenHeight * 0.8, // Limit to 80% of screen height
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                     // Reduced to 5% of screen height
+                    left: screenWidth * 0.05, // 5% of screen width
+                    right: screenWidth * 0.05, // 5% of screen width
+                  ),
+                  child: buildForm(screenHeight, screenWidth),
                 ),
-                child: buildForm(screenHeight, screenWidth),
               ),
             ),
           ),
@@ -111,6 +116,12 @@ Widget buildForm(screenHeight, screenWidth) {
       buildQuestionWithInput(
         question: '7. What’s your favorite pet?',
         placeholder: 'Ex - Dog',
+        questionFontSize: questionFontSize,
+        spacing: spacing,
+      ),
+      buildQuestionWithInput(
+        question: '8. What’s the number of your favourite person?',
+        placeholder: 'Ex - +1234567890 (BFF’s number)',
         questionFontSize: questionFontSize,
         spacing: spacing,
       ),
