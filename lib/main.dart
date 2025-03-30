@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:signova/screens/chatbotscreen.dart';
@@ -10,8 +11,10 @@ import 'package:signova/screens/signupscreen.dart';
 import 'package:signova/screens/formscreen.dart';
 import 'package:signova/screens/splashscreen.dart';
 
+late List<CameraDescription> _cameras;
 void main() async {
   await dotenv.load(fileName: ".env");
+  _cameras = await availableCameras();
   runApp(const MyApp());
 }
 
@@ -26,14 +29,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/splash',
+      initialRoute: '/communication',
       routes: {
         '/splash': (context) => SplashScreen(),
         '/': (context) => LandingScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
         '/home-community': (context) => HomeCommunityScreen(),
-        '/communication': (context) => CommunicationScreen(),
+        '/communication': (context) => CommunicationScreen(_cameras),
         '/profile': (context) => ProfileScreen(),
         '/chatbot': (context) => ChatbotScreen(),
         '/form': (context) => Formscreen(),

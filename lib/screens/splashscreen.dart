@@ -7,7 +7,8 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -19,15 +20,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       vsync: this,
     )..repeat(reverse: true);
 
-    _animation = Tween<double>(begin: 0.8, end: 1.2).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    _animation = Tween<double>(
+      begin: 0.8,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacementNamed(context, '/');
-    });
-     Timer(Duration(seconds: 10), () {
+    // Future.delayed(const Duration(seconds: 4), () {
+    //   Navigator.pushReplacementNamed(context, '/');
+    // });
+    Timer(Duration(seconds: 10), () {
       Navigator.pushReplacementNamed(context, '/'); // Navigate to HomeScreen
     });
   }
