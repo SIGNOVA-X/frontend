@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget buildHeader(double screenHeight, double screenWidth) {
     return Padding(
-      padding: EdgeInsets.only(top: screenHeight * 0.02, left: screenWidth * 0.04),
+      padding: EdgeInsets.only(top: screenHeight * 0.03, left: screenWidth * 0.04),
       child: RichText(
         text: const TextSpan(
           style: TextStyle(

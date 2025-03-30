@@ -32,7 +32,7 @@ class _FormscreenState extends State<Formscreen> {
                     left: screenWidth * 0.05, // 5% of screen width
                     right: screenWidth * 0.05, // 5% of screen width
                   ),
-                  child: buildForm(screenHeight, screenWidth),
+                  child: buildForm(screenHeight, screenWidth,context),
                 ),
               ),
             ),
@@ -43,7 +43,7 @@ class _FormscreenState extends State<Formscreen> {
   }
 }
 
-Widget buildForm(screenHeight, screenWidth) {
+Widget buildForm(screenHeight, screenWidth,context) {
   final double questionFontSize = screenWidth * 0.05; // 5% of screen width
   final double spacing = screenHeight * 0.02; // 2% of screen height
 
@@ -125,31 +125,30 @@ Widget buildForm(screenHeight, screenWidth) {
         questionFontSize: questionFontSize,
         spacing: spacing,
       ),
+       Center(
+         child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/home-community');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFAA69E3),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
+                              ),
+                              child: const Text(
+                                'Submit',
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                              ),
+                            ),
+       ),
     ],
   );
 }
 
-Widget buildQuestionWithInput({
-  required String question,
-  required String placeholder,
-  required double questionFontSize,
-  required double spacing,
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        question,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.bold, // Bold
-          fontSize: questionFontSize,
-          color: Color(0xFF000000), // Black color
-        ),
-      ),
-      SizedBox(height: spacing * 0.5),
-      buildInputField(placeholder),
-      SizedBox(height: spacing),
-    ],
-  );
-}

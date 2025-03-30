@@ -25,9 +25,6 @@ class _SplashScreenState extends State<SplashScreen>
       end: 1.2,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Navigator.pushReplacementNamed(context, '/');
-    // });
     Timer(Duration(seconds: 10), () {
       Navigator.pushReplacementNamed(context, '/'); // Navigate to HomeScreen
     });
