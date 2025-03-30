@@ -43,3 +43,28 @@ Widget buildInputField(String hintText, {bool isPassword = false}) {
       ),
     );
   }
+
+  Widget buildQuestionWithInput({
+  required String question,
+  required String placeholder,
+  required double questionFontSize,
+  required double spacing,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        question,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.bold, // Bold
+          fontSize: questionFontSize,
+          color: Color(0xFF000000), // Black color
+        ),
+      ),
+      SizedBox(height: spacing * 0.5),
+      buildInputField(placeholder),
+      SizedBox(height: spacing),
+    ],
+  );
+}

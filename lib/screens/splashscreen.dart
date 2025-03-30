@@ -24,9 +24,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       curve: Curves.easeInOut,
     ));
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacementNamed(context, '/');
-    });
+  
      Timer(Duration(seconds: 10), () {
       Navigator.pushReplacementNamed(context, '/'); // Navigate to HomeScreen
     });
