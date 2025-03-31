@@ -129,11 +129,9 @@ Widget communitymessages(sizeHeight, sizeWidth) {
     );
   }
 
-   Widget buildSignupLoginButton(BuildContext context, double screenWidth, double screenHeight, String displaytext, String route) {
+   Widget buildSignupLoginButton(BuildContext context, double screenWidth, double screenHeight, String displaytext, VoidCallback onPressed) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.pushNamed(context, route);
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFFAA69E3),
         shape: RoundedRectangleBorder(

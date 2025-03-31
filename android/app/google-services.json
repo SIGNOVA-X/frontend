@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1090542554035",
+    "firebase_url": "https://signova-18ec8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "signova-18ec8",
+    "storage_bucket": "signova-18ec8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1090542554035:android:16f3cebc71a07f02b099c6",
+        "android_client_info": {
+          "package_name": "com.example.unmute_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1090542554035-93tfktmh06li4gr45fckfpp3pf4d0dkf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.unmute_v1",
+            "certificate_hash": "22066dc9af7a330a2700cd8fbf9c571b52957ff8"
+          }
+        },
+        {
+          "client_id": "1090542554035-vogp6103cj4dcvrm5grvhc5s1r9l8b67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHiQJgWCnMirBHC8lZASvILTnZA7JOHN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1090542554035-vogp6103cj4dcvrm5grvhc5s1r9l8b67.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1090542554035-jt53g9u84hamd5l4ku6cp9g04j2pmigu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.unmuteV1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

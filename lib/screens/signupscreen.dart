@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:signova/components/crud.dart';
 import 'package:signova/components/input.dart';
 import 'package:signova/components/buttons.dart';
+import 'package:signova/components/snackbar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -10,7 +12,19 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController createPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    createPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,35 +87,35 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          buildInputField('Enter your full name'),
+                          buildInputField('Enter your full name', controller: fullNameController),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Enter your email'),
+                          buildInputField('Enter your email', controller: emailController),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Create a password', isPassword: true),
+                          buildInputField('Create a password', isPassword: true, controller: createPasswordController),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Confirm your password', isPassword: true),
+                          buildInputField('Confirm your password', isPassword: true, controller: confirmPasswordController),
                           SizedBox(height: screenHeight * 0.02),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/form');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFAA69E3),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
-                            ),
-                            child: const Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20,
-                                color: Color(0xFFFFFFFF),
-                              ),
-                            ),
-                          ),
+                          buildSignupLoginButton(
+                context,
+                screenWidth,
+                screenHeight,
+                'Sign Up',
+                () async {
+    if (createPasswordController.text != confirmPasswordController.text) {
+      showCustomSnackBar(context, 'Passwords do not match');
+      return;
+    }
+
+    if(await checkUserExists(emailController.text)) {
+      showCustomSnackBar(context, 'User already exists');
+      return;
+    }
+    // Call the addUser function with the provided details
+    await addUser(emailController.text, fullNameController.text, createPasswordController.text);
+    Navigator.pushNamed(context, '/form');
+  },
+              ),
+
                           SizedBox(height: screenHeight * 0.02),
                           const Text(
                             'Sign up with socials',

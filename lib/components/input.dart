@@ -31,9 +31,10 @@ InputDecoration _inputBoxDecoration(String hintText) {
     );
     }
 
-Widget buildInputField(String hintText, {bool isPassword = false}) {
+Widget buildInputField(String hintText, {bool isPassword = false, required TextEditingController controller}) {
     return TextField(
       obscureText: isPassword,
+      controller: controller, // Use the controller for real-time updates
       decoration: _inputBoxDecoration(hintText),
       style: const TextStyle(
         fontFamily: 'Inter',
@@ -42,13 +43,14 @@ Widget buildInputField(String hintText, {bool isPassword = false}) {
         color: Colors.black, // Input text color
       ),
     );
-  }
+}
 
-  Widget buildQuestionWithInput({
+Widget buildQuestionWithInput({
   required String question,
   required String placeholder,
   required double questionFontSize,
   required double spacing,
+  required TextEditingController controller, // Pass controller to access value
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +65,16 @@ Widget buildInputField(String hintText, {bool isPassword = false}) {
         ),
       ),
       SizedBox(height: spacing * 0.5),
-      buildInputField(placeholder),
+      TextField(
+        controller: controller, // Use controller for input
+        decoration: _inputBoxDecoration(placeholder),
+        style: const TextStyle(
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w500, // Medium
+          fontSize: 15,
+          color: Colors.black, // Input text color
+        ),
+      ),
       SizedBox(height: spacing),
     ],
   );

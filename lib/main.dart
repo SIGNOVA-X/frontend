@@ -10,9 +10,12 @@ import 'package:signova/screens/profilescreen.dart';
 import 'package:signova/screens/signupscreen.dart';
 import 'package:signova/screens/formscreen.dart';
 import 'package:signova/screens/splashscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 late List<CameraDescription> _cameras;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
   _cameras = await availableCameras();
   runApp(const MyApp());
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/communication',
+      initialRoute: '/splash',
       routes: {
         '/splash': (context) => SplashScreen(),
         '/': (context) => LandingScreen(),
