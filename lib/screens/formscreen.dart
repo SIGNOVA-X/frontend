@@ -210,36 +210,5 @@ Widget buildForm(screenHeight, screenWidth, context, TextEditingController gende
   );
 }
 
-Widget buildQuestionWithInput({
-  required String question,
-  required String placeholder,
-  required double questionFontSize,
-  required double spacing,
-  required TextEditingController controller, // Add controller parameter
-}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        question,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.w600,
-          fontSize: questionFontSize,
-        ),
-      ),
-      SizedBox(height: spacing),
-      TextField(
-        controller: controller, // Assign the controller to the TextField
-        decoration: InputDecoration(
-          hintText: placeholder,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-      ),
-      SizedBox(height: spacing),
-    ],
-  );
-}
+
 
