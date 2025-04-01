@@ -18,10 +18,13 @@ import 'package:signova/screens/formscreen.dart';
 import 'package:signova/screens/splashscreen.dart';
 import 'package:telephony_sms/telephony_sms.dart';
 import 'package:toastification/toastification.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 late List<CameraDescription> _cameras;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
   _cameras = await availableCameras();
   runApp(ToastificationWrapper(child: const MyApp()));
@@ -165,7 +168,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/communication',
+      initialRoute: '/splash',
       routes: {
         '/splash': (context) => SplashScreen(),
         '/': (context) => LandingScreen(),

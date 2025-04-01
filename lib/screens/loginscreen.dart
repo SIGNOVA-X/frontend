@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:signova/components/buttons.dart'; 
+import 'package:signova/components/buttons.dart';
+import 'package:signova/components/crud.dart'; 
 import 'package:signova/components/input.dart';
 import 'package:signova/components/header.dart';
+import 'package:signova/components/snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +13,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -34,8 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  
 
   Widget buildLoginForm(double screenHeight, double screenWidth) {
     return Column(
@@ -64,11 +73,32 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              buildInputField('Enter your email'),
+              buildInputField('Enter your email', controller: emailController),
               SizedBox(height: screenHeight * 0.02),
-              buildInputField('Enter a password', isPassword: true),
+              buildInputField('Enter a password', isPassword: true, controller: passwordController),
               SizedBox(height: screenHeight * 0.02),
-              buildSignupLoginButton(context,screenWidth, screenHeight, 'Log In','/home-community'),
+              buildSignupLoginButton(
+                context,
+                screenWidth,
+                screenHeight,
+                'Log In',
+                () async{
+                  final email = emailController.text.trim();
+                  final password = passwordController.text.trim();
+
+                  if (email.isEmpty || password.isEmpty) {
+                    showCustomSnackBar(context, 'Please Fill Required Details');
+                    return;
+                  }
+                  if (!(await validateUserCredentials(email,password))) {
+                    showCustomSnackBar(context, 'Invalid email or password');
+                    return;
+                  };
+                  writeStorage('username',email);
+                  // Perform login logic here (e.g., API call)
+                  Navigator.pushNamed(context, '/home-community');
+                },
+              ),
               SizedBox(height: screenHeight * 0.01),
               const Text(
                 'Forgot password?',
@@ -91,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: screenHeight * 0.01),
-              buildSocialButtons(context,screenWidth),
+              buildSocialButtons(context, screenWidth),
               SizedBox(height: screenHeight * 0.02),
             ],
           ),
@@ -99,7 +129,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-
-
-
 }
