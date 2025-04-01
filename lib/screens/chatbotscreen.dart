@@ -23,25 +23,59 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _userinputcontroller = TextEditingController();
 
   callGeminiModel() async {
+    // try {
+    //   if (_userinputcontroller.text.isNotEmpty) {
+    //     _messages.add(Message(text: _userinputcontroller.text, isUser: true));
+    //   }
+    //   final model = GenerativeModel(
+    //     model: 'gemini-2.0-flash',
+    //     apiKey: dotenv.env['GENERATIVE_AI_APIKEY']!,
+    //   );
+
+    //   final prompt = _userinputcontroller.text.trim();
+    //   final content = [Content.text(prompt)];
+    //   final response = await model.generateContent(content);
+    //   log(response.text.toString());
+    //   setState(() {
+    //     _messages.add(Message(text: response.text!, isUser: false));
+    //   });
+    //   _userinputcontroller.clear();
+    // } catch (e) {
+    //   log(e.toString());
+    // }
+
     try {
       if (_userinputcontroller.text.isNotEmpty) {
         _messages.add(Message(text: _userinputcontroller.text, isUser: true));
       }
+
       final model = GenerativeModel(
-        model: 'gemini-2.0-flash',
+        model:
+            'tunedModels/motivationalbot-8ly8h0vudkfl', // Your fine-tuned model
         apiKey: dotenv.env['GENERATIVE_AI_APIKEY']!,
+        generationConfig: GenerationConfig(
+          temperature: 1.0,
+          topP: 0.95,
+          topK: 40,
+          maxOutputTokens: 8192,
+        ),
       );
 
       final prompt = _userinputcontroller.text.trim();
       final content = [Content.text(prompt)];
       final response = await model.generateContent(content);
+
       log(response.text.toString());
+
       setState(() {
-        _messages.add(Message(text: response.text!, isUser: false));
+        _messages.add(
+          Message(text: response.text ?? "No response", isUser: false),
+        );
       });
+
       _userinputcontroller.clear();
     } catch (e) {
-      log(e.toString());
+      log('Error: $e');
     }
   }
 

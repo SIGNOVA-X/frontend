@@ -1,11 +1,6 @@
 import 'dart:developer';
-// import 'dart:ffi';
-// import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-// import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
-// import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_session.dart';
-// import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,8 +68,9 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
   //! start video recording function
   Future<void> startVideoRecording() async {
     if (!camcontroller.value.isInitialized ||
-        camcontroller.value.isRecordingVideo)
+        camcontroller.value.isRecordingVideo) {
       return;
+    }
 
     try {
       await camcontroller.startVideoRecording();
@@ -100,7 +96,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
       log('check for the xfile created #1 : $lengthCheck');
       log('check for the xfile created #2: $nameCheck');
       // List<Uint8List> frames = await extractFrames(_videoFile);
-      // Image.memory(frames[0]);
+      // log("Total frames extracted: $frames.length}");
     } catch (e) {
       log('Error stopping video recording: $e');
     }
@@ -120,6 +116,39 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
       _isCameraEnabled = !_isCameraEnabled;
     });
   }
+
+  // Future<List<Uint8List>> extractFrames(XFile videoFile) async {
+  //   List<Uint8List> frames = [];
+
+  //   try {
+  //     log("here before breaking into frames");
+  //     // FFmpeg command to extract frames and print raw data
+  //     await FFmpegKit.executeAsync(
+  //       '-i ${videoFile.path} -vf "fps=1" -f image2pipe -vcodec mjpeg -',
+  //       (session) async {
+  //         final returnCode = await session.getReturnCode();
+  //         log("here after breaking into frames");
+  //         if (ReturnCode.isSuccess(returnCode)) {
+  //           log("Frame extraction successful");
+  //         } else {
+  //           log("Error extracting frames: ${returnCode?.getValue()}");
+  //         }
+  //       },
+  //       (logs) {
+  //         if (logs.getMessage().startsWith('\xff\xd8')) {
+  //           log("adding frames to list");
+  //           frames.add(Uint8List.fromList(logs.getMessage().codeUnits));
+  //         }
+  //       },
+  //     );
+
+  //     log("Frames extracted: ${frames.length}"); // Log frame count
+  //   } catch (e) {
+  //     log("Error extracting frames: $e");
+  //   }
+
+  //   return frames;
+  // }
 
   // Future<List<Uint8List>> extractFrames(XFile videoFile) async {
   //   List<Uint8List> frames = [];
