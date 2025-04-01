@@ -19,12 +19,13 @@ import 'package:signova/screens/splashscreen.dart';
 import 'package:telephony_sms/telephony_sms.dart';
 import 'package:toastification/toastification.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 late List<CameraDescription> _cameras;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   _cameras = await availableCameras();
   runApp(ToastificationWrapper(child: const MyApp()));
