@@ -14,9 +14,12 @@ class _LandingScreenState extends State<LandingScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Responsive horizontal padding
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.05,
+          ), // Responsive horizontal padding
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -93,7 +96,10 @@ class _LandingScreenState extends State<LandingScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      minimumSize: Size(screenWidth * 0.4, screenHeight * 0.05), // Responsive button size
+                      minimumSize: Size(
+                        screenWidth * 0.4,
+                        screenHeight * 0.05,
+                      ), // Responsive button size
                     ),
                     child: Text(
                       'Get Started',
@@ -114,7 +120,10 @@ class _LandingScreenState extends State<LandingScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      minimumSize: Size(screenWidth * 0.4, screenHeight * 0.05), // Responsive button size
+                      minimumSize: Size(
+                        screenWidth * 0.4,
+                        screenHeight * 0.05,
+                      ), // Responsive button size
                     ),
                     child: Text(
                       'Log in',

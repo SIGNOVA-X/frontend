@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:signova/components/navbar.dart';
 import 'package:signova/model/message.dart';
 
 class ChatbotScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
+  int _selectedIndex = 3;
   final List<Message> _messages = [
     // Message(isUser: true, text: "hello ! how are you?"),
     // Message(isUser: false, text: "I am fine.what about you?"),
@@ -23,27 +25,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _userinputcontroller = TextEditingController();
 
   callGeminiModel() async {
-    // try {
-    //   if (_userinputcontroller.text.isNotEmpty) {
-    //     _messages.add(Message(text: _userinputcontroller.text, isUser: true));
-    //   }
-    //   final model = GenerativeModel(
-    //     model: 'gemini-2.0-flash',
-    //     apiKey: dotenv.env['GENERATIVE_AI_APIKEY']!,
-    //   );
-
-    //   final prompt = _userinputcontroller.text.trim();
-    //   final content = [Content.text(prompt)];
-    //   final response = await model.generateContent(content);
-    //   log(response.text.toString());
-    //   setState(() {
-    //     _messages.add(Message(text: response.text!, isUser: false));
-    //   });
-    //   _userinputcontroller.clear();
-    // } catch (e) {
-    //   log(e.toString());
-    // }
-
     try {
       if (_userinputcontroller.text.isNotEmpty) {
         _messages.add(Message(text: _userinputcontroller.text, isUser: true));
@@ -76,6 +57,26 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       _userinputcontroller.clear();
     } catch (e) {
       log('Error: $e');
+    }
+  }
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    // Navigate based on selected index
+    switch (index) {
+      case 0:
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(context, '/communication');
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context, '/chatbot');
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
     }
   }
 
@@ -213,6 +214,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
+        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
       ),
     );
   }

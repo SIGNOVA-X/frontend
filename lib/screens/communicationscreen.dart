@@ -16,16 +16,21 @@ class CommunicationScreen extends StatefulWidget {
 }
 
 class _CommunicationScreenState extends State<CommunicationScreen> {
+  // toggle buttons
   final List<bool> isSelectedLeft = [true, false];
   final List<bool> isSelectedRight = [true, false];
+
+  // screen navigation controller
   int _selectedIndex = 2;
+
+  // camera controller + variables
   late CameraController camcontroller;
-  bool _isRecording = false;
-  int _selectedCameraIndex = 0;
-  bool _isCameraInitialized = false;
+  bool _isRecording = false; // play / pause button
+  int _selectedCameraIndex = 0; // for switching camera
+  bool _isCameraInitialized = false; // for toggling diable camera
   bool _isCameraEnabled = true; // Track if camera is enabled
-  late List<CameraDescription> cameras;
-  late XFile _videoFile;
+  late List<CameraDescription> cameras; // camera access
+  late XFile _videoFile; // video output after recording stops
 
   @override
   void initState() {

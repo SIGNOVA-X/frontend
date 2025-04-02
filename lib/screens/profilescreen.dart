@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:signova/components/buttons.dart';
+import 'package:signova/components/crud.dart';
 import 'package:signova/components/navbar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -13,6 +16,49 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 4;
+  String? username;
+  String? useremail;
+  String? userphoneno;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  void fetchUser() async {
+    log(readStorage('username'));
+    String? userId = readStorage('username');
+    if (userId.isEmpty) {
+      log("User ID is null or empty!");
+      setState(() {
+        username = 'Guest';
+        useremail = "guest@gmail.com";
+        userphoneno = "+01 234 567 89";
+      });
+      return; // Stop execution if userId is invalid
+    }
+    log("Fetching user details for ID: $userId");
+    Map<String, dynamic>? userData = await getUserDetails(userId);
+    Map<String, dynamic>? formData = await getFormData();
+    if (userData != null && formData != null) {
+      log("User Data: $userData");
+      log("Name: ${userData['name']}");
+      setState(() {
+        username = userData['name'] ?? 'Guest';
+        useremail = userId;
+        userphoneno = formData['phone'] ?? "+01 234 567 89";
+      });
+    } else {
+      setState(() {
+        username = 'Guest';
+        useremail = "guest@gmail.com";
+        userphoneno = "+01 234 567 89";
+      });
+      log("User or form data not found!");
+    }
+  }
+
   void _onTabChange(int index) {
     setState(() {
       _selectedIndex = index;
@@ -65,184 +111,179 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Positioned(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: sizeWidth / 4.5,
-                    right: sizeWidth / 3,
-                    left: sizeWidth / 3,
-                    bottom: sizeHeight / 90,
-                  ),
-                  child: circleButton(
-                    sizeHeight * 2,
-                    sizeWidth * 2,
-                    'assets/images/profile.png',
-                    false,
-                  ),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: sizeWidth / 4.5,
+                  right: sizeWidth / 3,
+                  left: sizeWidth / 3,
+                  bottom: sizeHeight / 90,
                 ),
-                Text(
-                  "Jane Doe",
-                  style: GoogleFonts.inter(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: sizeWidth / 16,
-                  ),
+                child: circleButton(
+                  sizeHeight * 2,
+                  sizeWidth * 2,
+                  'assets/images/profile.png',
+                  false,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("youremail@gmail.com | "),
-                    Text("+01 234 567 89"),
+              ),
+              Text(
+                username ?? "guest",
+                style: GoogleFonts.inter(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: sizeWidth / 16,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text("${useremail} | "), Text("$userphoneno")],
+              ),
+
+              Container(
+                margin: EdgeInsets.only(
+                  top: sizeHeight / 50,
+                  right: sizeWidth / 20,
+                  left: sizeWidth / 20,
+                  bottom: sizeHeight / 70,
+                ),
+                padding: EdgeInsets.all(sizeHeight / 50),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: sizeWidth / 200,
+                      offset: Offset(0, 2.5),
+                    ),
                   ],
                 ),
-
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 70,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon((MingCute.profile_line)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Edit profile information"),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon((Clarity.bell_line)),
-                          Text("Notifications"),
-                          SizedBox(width: sizeWidth / 4),
-                          Text(
-                            "ON",
-                            style: GoogleFonts.inter(
-                              color: Color.fromRGBO(21, 115, 254, 1.0),
-                            ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon((MingCute.profile_line)),
+                        SizedBox(width: sizeWidth / 14),
+                        Text("Edit profile information"),
+                      ],
+                    ),
+                    SizedBox(height: sizeHeight / 120),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon((Clarity.bell_line)),
+                        Text("Notifications"),
+                        SizedBox(width: sizeWidth / 4),
+                        Text(
+                          "ON",
+                          style: GoogleFonts.inter(
+                            color: Color.fromRGBO(21, 115, 254, 1.0),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: sizeHeight / 120),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon((Icons.translate_outlined)),
-                          Text("Language"),
-                          SizedBox(width: sizeWidth / 4),
-                          Text(
-                            "English",
-                            style: GoogleFonts.inter(
-                              color: Color.fromRGBO(21, 115, 254, 1.0),
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon((Icons.translate_outlined)),
+                        Text("Language"),
+                        SizedBox(width: sizeWidth / 4),
+                        Text(
+                          "English",
+                          style: GoogleFonts.inter(
+                            color: Color.fromRGBO(21, 115, 254, 1.0),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 70,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon((Icons.contact_support_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Emergency Contact"),
-                        ],
-                      ),
-                    ],
-                  ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: sizeHeight / 50,
+                  right: sizeWidth / 20,
+                  left: sizeWidth / 20,
+                  bottom: sizeHeight / 70,
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 180,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon((Icons.support_agent_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Help & Support"),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-                      Row(
-                        children: [
-                          Icon((Icons.contact_support)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Contact us"),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
+                padding: EdgeInsets.all(sizeHeight / 50),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: sizeWidth / 200,
+                      offset: Offset(0, 2.5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon((Icons.contact_support_outlined)),
+                        SizedBox(width: sizeWidth / 14),
+                        Text("Emergency Contact"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: sizeHeight / 50,
+                  right: sizeWidth / 20,
+                  left: sizeWidth / 20,
+                  bottom: sizeHeight / 180,
+                ),
+                padding: EdgeInsets.all(sizeHeight / 50),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: sizeWidth / 200,
+                      offset: Offset(0, 2.5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon((Icons.support_agent_outlined)),
+                        SizedBox(width: sizeWidth / 14),
+                        Text("Help & Support"),
+                      ],
+                    ),
+                    SizedBox(height: sizeHeight / 120),
+                    Row(
+                      children: [
+                        Icon((Icons.contact_support)),
+                        SizedBox(width: sizeWidth / 14),
+                        Text("Contact us"),
+                      ],
+                    ),
+                    SizedBox(height: sizeHeight / 120),
 
-                      Row(
-                        children: [
-                          Icon((Icons.lock_clock_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Privacy Policy"),
-                        ],
-                      ),
-                    ],
-                  ),
+                    Row(
+                      children: [
+                        Icon((Icons.lock_clock_outlined)),
+                        SizedBox(width: sizeWidth / 14),
+                        Text("Privacy Policy"),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
+        padding: EdgeInsets.all(sizeWidth / 60),
         child: gbottomnavbar(context, _selectedIndex, _onTabChange),
       ),
     );

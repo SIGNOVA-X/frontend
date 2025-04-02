@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:signova/components/buttons.dart';
-import 'package:signova/components/crud.dart'; 
+import 'package:signova/components/crud.dart';
 import 'package:signova/components/input.dart';
 import 'package:signova/components/header.dart';
 import 'package:signova/components/snackbar.dart';
@@ -22,13 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           buildHeader(screenHeight, screenWidth),
@@ -75,14 +76,18 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               buildInputField('Enter your email', controller: emailController),
               SizedBox(height: screenHeight * 0.02),
-              buildInputField('Enter a password', isPassword: true, controller: passwordController),
+              buildInputField(
+                'Enter a password',
+                isPassword: true,
+                controller: passwordController,
+              ),
               SizedBox(height: screenHeight * 0.02),
               buildSignupLoginButton(
                 context,
                 screenWidth,
                 screenHeight,
                 'Log In',
-                () async{
+                () async {
                   final email = emailController.text.trim();
                   final password = passwordController.text.trim();
 
@@ -90,13 +95,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     showCustomSnackBar(context, 'Please Fill Required Details');
                     return;
                   }
-                  if (!(await validateUserCredentials(email,password))) {
+                  if (!(await validateUserCredentials(email, password))) {
                     showCustomSnackBar(context, 'Invalid email or password');
                     return;
-                  };
-                  writeStorage('username',email);
+                  }
+                  writeStorage('username', email);
+
                   // Perform login logic here (e.g., API call)
-                  Navigator.pushNamed(context, '/home-community');
+                  // Navigator.pushNamed(context, '/home-community');
+                  String storedUser = readStorage('username');
+                  if (storedUser.isNotEmpty) {
+                    Navigator.pushNamed(context, '/home-community');
+                  } else {
+                    showCustomSnackBar(
+                      context,
+                      'Failed to store username. Try again.',
+                    );
+                  }
                 },
               ),
               SizedBox(height: screenHeight * 0.01),

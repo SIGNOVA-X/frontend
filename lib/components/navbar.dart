@@ -11,6 +11,7 @@ Widget gbottomnavbar(
   return GNav(
     gap: 2,
     activeColor: selectedIndex == 1 ? Colors.black : Colors.white,
+    backgroundColor: Colors.white,
     color: Color.fromRGBO(140, 58, 207, 1),
     tabBackgroundColor:
         selectedIndex == 1 ? Colors.grey : Color.fromRGBO(140, 58, 207, 1),

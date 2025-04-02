@@ -20,7 +20,8 @@ class _FormscreenState extends State<Formscreen> {
   final TextEditingController hobbiesController = TextEditingController();
   final TextEditingController travelController = TextEditingController();
   final TextEditingController petController = TextEditingController();
-  final TextEditingController favoritePersonController = TextEditingController();
+  final TextEditingController favoritePersonController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -42,6 +43,7 @@ class _FormscreenState extends State<Formscreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           buildHeader(screenHeight, screenWidth),
@@ -54,11 +56,23 @@ class _FormscreenState extends State<Formscreen> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.only(
-                     // Reduced to 5% of screen height
+                    // Reduced to 5% of screen height
                     left: screenWidth * 0.05, // 5% of screen width
                     right: screenWidth * 0.05, // 5% of screen width
                   ),
-                  child: buildForm(screenHeight, screenWidth, context, genderController, ageController, phoneController, professionController, hobbiesController, travelController, petController, favoritePersonController),
+                  child: buildForm(
+                    screenHeight,
+                    screenWidth,
+                    context,
+                    genderController,
+                    ageController,
+                    phoneController,
+                    professionController,
+                    hobbiesController,
+                    travelController,
+                    petController,
+                    favoritePersonController,
+                  ),
                 ),
               ),
             ),
@@ -69,7 +83,19 @@ class _FormscreenState extends State<Formscreen> {
   }
 }
 
-Widget buildForm(screenHeight, screenWidth, context, TextEditingController genderController, TextEditingController ageController, TextEditingController phoneController, TextEditingController professionController, TextEditingController hobbiesController, TextEditingController travelController, TextEditingController petController, TextEditingController favoritePersonController) {
+Widget buildForm(
+  screenHeight,
+  screenWidth,
+  context,
+  TextEditingController genderController,
+  TextEditingController ageController,
+  TextEditingController phoneController,
+  TextEditingController professionController,
+  TextEditingController hobbiesController,
+  TextEditingController travelController,
+  TextEditingController petController,
+  TextEditingController favoritePersonController,
+) {
   final double questionFontSize = screenWidth * 0.05; // 5% of screen width
   final double spacing = screenHeight * 0.02; // 2% of screen height
 
@@ -159,56 +185,55 @@ Widget buildForm(screenHeight, screenWidth, context, TextEditingController gende
         spacing: spacing,
         controller: favoritePersonController,
       ),
-       Center(
-         child: ElevatedButton(
-                              onPressed: () async {
-                                if (genderController.text.isEmpty ||
-                                    ageController.text.isEmpty ||
-                                    phoneController.text.isEmpty ||
-                                    professionController.text.isEmpty ||
-                                    hobbiesController.text.isEmpty ||
-                                    travelController.text.isEmpty ||
-                                    petController.text.isEmpty ||
-                                    favoritePersonController.text.isEmpty) {
-                                  showCustomSnackBar(context, 'Please fill all the fields');
-                                  return;
-                                }
+      Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            if (genderController.text.isEmpty ||
+                ageController.text.isEmpty ||
+                phoneController.text.isEmpty ||
+                professionController.text.isEmpty ||
+                hobbiesController.text.isEmpty ||
+                travelController.text.isEmpty ||
+                petController.text.isEmpty ||
+                favoritePersonController.text.isEmpty) {
+              showCustomSnackBar(context, 'Please fill all the fields');
+              return;
+            }
 
-                                final formData = {
-                                  'gender': genderController.text,
-                                  'age': ageController.text,
-                                  'phone': phoneController.text,
-                                  'profession': professionController.text,
-                                  'hobbies': hobbiesController.text,
-                                  'travel': travelController.text,
-                                  'pet': petController.text,
-                                  'favoritePerson': favoritePersonController.text,
-                                };
+            final formData = {
+              'gender': genderController.text,
+              'age': ageController.text,
+              'phone': phoneController.text,
+              'profession': professionController.text,
+              'hobbies': hobbiesController.text,
+              'travel': travelController.text,
+              'pet': petController.text,
+              'favoritePerson': favoritePersonController.text,
+            };
 
-                               await storeFormData(formData); // Replace 'userId' with the actual user ID
-                                Navigator.pushNamed(context, '/home-community');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFAA69E3),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
-                              ),
-                              child: const Text(
-                                'Submit',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                            ),
-       ),
+            await storeFormData(
+              formData,
+            ); // Replace 'userId' with the actual user ID
+            Navigator.pushNamed(context, '/home-community');
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFAA69E3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
+          ),
+          child: const Text(
+            'Submit',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              color: Color(0xFFFFFFFF),
+            ),
+          ),
+        ),
+      ),
     ],
   );
 }
-
-
-

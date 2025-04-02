@@ -14,8 +14,10 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController createPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController createPasswordController =
+      TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -32,10 +34,14 @@ class _SignupScreenState extends State<SignupScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: screenHeight * 0.02, left: screenWidth * 0.04),
+            padding: EdgeInsets.only(
+              top: screenHeight * 0.02,
+              left: screenWidth * 0.04,
+            ),
             child: RichText(
               text: const TextSpan(
                 style: TextStyle(
@@ -87,34 +93,60 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          buildInputField('Enter your full name', controller: fullNameController),
+                          buildInputField(
+                            'Enter your full name',
+                            controller: fullNameController,
+                          ),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Enter your email', controller: emailController),
+                          buildInputField(
+                            'Enter your email',
+                            controller: emailController,
+                          ),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Create a password', isPassword: true, controller: createPasswordController),
+                          buildInputField(
+                            'Create a password',
+                            isPassword: true,
+                            controller: createPasswordController,
+                          ),
                           SizedBox(height: screenHeight * 0.02),
-                          buildInputField('Confirm your password', isPassword: true, controller: confirmPasswordController),
+                          buildInputField(
+                            'Confirm your password',
+                            isPassword: true,
+                            controller: confirmPasswordController,
+                          ),
                           SizedBox(height: screenHeight * 0.02),
                           buildSignupLoginButton(
-                context,
-                screenWidth,
-                screenHeight,
-                'Sign Up',
-                () async {
-    if (createPasswordController.text != confirmPasswordController.text) {
-      showCustomSnackBar(context, 'Passwords do not match');
-      return;
-    }
+                            context,
+                            screenWidth,
+                            screenHeight,
+                            'Sign Up',
+                            () async {
+                              if (createPasswordController.text !=
+                                  confirmPasswordController.text) {
+                                showCustomSnackBar(
+                                  context,
+                                  'Passwords do not match',
+                                );
+                                return;
+                              }
 
-    if(await checkUserExists(emailController.text)) {
-      showCustomSnackBar(context, 'User already exists');
-      return;
-    }
-    // Call the addUser function with the provided details
-    await addUser(emailController.text, fullNameController.text, createPasswordController.text);
-    Navigator.pushNamed(context, '/form');
-  },
-              ),
+                              if (await checkUserExists(emailController.text)) {
+                                showCustomSnackBar(
+                                  context,
+                                  'User already exists',
+                                );
+                                return;
+                              }
+                              // Call the addUser function with the provided details
+                              await addUser(
+                                emailController.text,
+                                fullNameController.text,
+                                createPasswordController.text,
+                              );
+                              writeStorage('username', emailController.text);
+                              Navigator.pushNamed(context, '/form');
+                            },
+                          ),
 
                           SizedBox(height: screenHeight * 0.02),
                           const Text(

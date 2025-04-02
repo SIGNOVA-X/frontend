@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shake_detector/shake_detector.dart';
 import 'package:signova/screens/chatbotscreen.dart';
 import 'package:signova/screens/communicationscreen.dart';
@@ -28,6 +29,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   _cameras = await availableCameras();
+  await GetStorage.init();
   runApp(ToastificationWrapper(child: const MyApp()));
 }
 
