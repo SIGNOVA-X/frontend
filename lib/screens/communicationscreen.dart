@@ -29,7 +29,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   int _selectedIndex = 2;
 
   // camera controller + variables
-  late CameraController camcontroller;
+  CameraController? camcontroller;
   bool _isRecording = false; // play / pause button
   int _selectedCameraIndex = 0; // for switching camera
   bool _isCameraInitialized = false; // for toggling diable camera
@@ -44,8 +44,8 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   @override
   void initState() {
     super.initState();
-    _fetchGifUrlFromApi();
     _setUpCamera(_selectedCameraIndex);
+    _fetchGifUrlFromApi();
   }
 
   Future<void> _fetchGifUrlFromApi() async {
@@ -63,12 +63,26 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   }
 
   Future<void> _setUpCamera(int camIndex) async {
-    CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
-      setState(() {
-        camcontroller = controller!;
-        _isCameraInitialized = true;
+    // CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
+    //   setState(() {
+    //     camcontroller = controller!;
+    //     _isCameraInitialized = true;
+    //   });
+    // });
+    try {
+      CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
+        if (controller != null) {
+          setState(() {
+            camcontroller = controller;
+            _isCameraInitialized = true;
+          });
+        } else {
+          log("CameraController initialization failed.");
+        }
       });
-    });
+    } catch (e) {
+      log("Camera setup error: $e");
+    }
   }
 
   //! function for switching the camera
@@ -77,14 +91,14 @@ class _CommunicationScreenState extends State<CommunicationScreen>
       setState(() {
         _selectedCameraIndex = newIndex;
       });
-      camcontroller.dispose();
+      camcontroller?.dispose();
       _setUpCamera(_selectedCameraIndex);
     });
   }
 
   //! start video recording function
   Future<void> startVideoRecording() async {
-    CameraHelper.startVideoRecording(camcontroller, () {
+    CameraHelper.startVideoRecording(camcontroller!, () {
       setState(() {
         _isRecording = true;
       });
@@ -93,7 +107,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
 
   //! stop video recording function
   Future<void> stopVideoRecording() async {
-    CameraHelper.stopVideoRecording(camcontroller, (XFile videoFile) {
+    CameraHelper.stopVideoRecording(camcontroller!, (XFile videoFile) {
       setState(() {
         _isRecording = false;
         _videoFile = videoFile;
@@ -121,7 +135,10 @@ class _CommunicationScreenState extends State<CommunicationScreen>
 
   @override
   void dispose() {
-    camcontroller.dispose();
+    // camcontroller?.dispose();
+    if (_isCameraInitialized) {
+      camcontroller!.dispose();
+    }
     if (_isVideoLoaded) {
       _videoController.dispose();
     }
