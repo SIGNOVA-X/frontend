@@ -36,6 +36,10 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   bool _isCameraEnabled = true; // Track if camera is enabled
   late List<CameraDescription> cameras; // camera access
   late XFile _videoFile; // video output
+  late VideoPlayerController _videoController;
+  bool _isVideoLoaded = false;
+  late String _gifUrl;
+  bool _isGifLoaded = false;
 
   @override
   void initState() {
