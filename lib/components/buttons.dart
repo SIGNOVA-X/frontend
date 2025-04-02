@@ -236,3 +236,43 @@ Widget profileScroll(
     ),
   );
 }
+
+
+class ToggleButtonComponent extends StatelessWidget {
+  final List<bool> isSelected;
+  final List<String> labels;
+  final Function(int) onPressed;
+  final double? fontSize;
+  final double? padding;
+
+  const ToggleButtonComponent({
+    Key? key,
+    required this.isSelected,
+    required this.labels,
+    required this.onPressed,
+    this.fontSize,
+    this.padding,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleButtons(
+      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 6),
+      selectedColor: Colors.white,
+      fillColor: Color.fromRGBO(140, 58, 207, 1),
+      borderWidth: 2,
+      borderRadius: BorderRadius.circular(15.0),
+      onPressed: onPressed,
+      isSelected: isSelected,
+      children: labels
+          .map((label) => Padding(
+                padding: EdgeInsets.all(padding ?? MediaQuery.of(context).size.width * MediaQuery.of(context).size.height * 0.00002),
+                child: Text(
+                  label,
+                  style: GoogleFonts.inter(fontSize: fontSize ?? MediaQuery.of(context).size.height / 65),
+                ),
+              ))
+          .toList(),
+    );
+  }
+}
