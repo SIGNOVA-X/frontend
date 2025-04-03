@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_to_text.dart' as sst;
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:signova/components/crud.dart';
 import 'package:signova/components/navbar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:gif_view/gif_view.dart';
@@ -44,14 +48,25 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   bool _isVideoLoaded = false;
   late String _gifUrl;
   bool _isGifLoaded = false;
+
+  // tts and stt
+  FlutterTts flutterTts = FlutterTts();
   String _responseText =
       "hello i am very happy today and you are very beautiful"; // Default placeholder text
+  // final List<bool> _playAudio = [true,false];
+  bool _playAudio = true;
+  bool _isListening = false;
+  late sst.SpeechToText speech;
+  String _textFromSpeech = "Press the mic and start speaking...";
 
   @override
   void initState() {
     super.initState();
+    speech = sst.SpeechToText();
     _setUpCamera(_selectedCameraIndex);
     _fetchGifUrlFromApi();
+    initializeTts();
+    _startListening();
   }
 
   Future<void> _fetchGifUrlFromApi() async {
@@ -70,12 +85,6 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   }
 
   Future<void> _setUpCamera(int camIndex) async {
-    // CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
-    //   setState(() {
-    //     camcontroller = controller!;
-    //     _isCameraInitialized = true;
-    //   });
-    // });
     try {
       await CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
         if (controller != null) {
@@ -114,7 +123,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
 
   //! stop video recording function
   Future<void> stopVideoRecording() async {
-    CameraHelper.stopVideoRecording(camcontroller, (XFile videoFile) async {
+    CameraHelper.stopVideoRecording(camcontroller!, (XFile videoFile) async {
       setState(() {
         _isRecording = false;
         _videoFile = videoFile;
@@ -146,9 +155,48 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     });
   }
 
+  void initializeTts() {
+    flutterTts.setStartHandler(() {
+      log("TTS playback started");
+    });
+    flutterTts.setCompletionHandler(() {
+      log("TTS playback finished");
+    });
+    flutterTts.setErrorHandler((msg) {
+      log("TTS playback error: $msg");
+    });
+  }
+
+  void _startListening() async {
+    bool available = await speech.initialize(
+      onStatus: (status) => log("Status: $status"),
+      onError: (error) => log("Error: $error"),
+    );
+    if (available) {
+      setState(() {
+        _isListening = true;
+      });
+      speech.listen(
+        listenFor: Duration(seconds: 10),
+        onResult: (result) {
+          log(result.toString());
+          setState(() {
+            _textFromSpeech = result.recognizedWords;
+          });
+        },
+      );
+    }
+  }
+
+  void _stopListening() {
+    speech.stop();
+    setState(() {
+      _isListening = false;
+    });
+  }
+
   @override
   void dispose() {
-    // camcontroller?.dispose();
     if (_isCameraInitialized) {
       camcontroller!.dispose();
     }
@@ -221,7 +269,20 @@ class _CommunicationScreenState extends State<CommunicationScreen>
                               style: GoogleFonts.inter(),
                             ),
                           )
-                          : Icon(Icons.audiotrack_rounded),
+                          : InkWell(
+                            onTap: () async {
+                              setState(() {
+                                _playAudio = !_playAudio;
+                              });
+                              if (_playAudio) {
+                                await textToSpeech(_responseText, flutterTts);
+                              }
+                            },
+                            child:
+                                _playAudio
+                                    ? Icon(Icons.multitrack_audio_outlined)
+                                    : Icon(Icons.audiotrack_rounded),
+                          ),
                 ),
                 CameraPreviewComponent(
                   camcontroller: camcontroller,
@@ -288,7 +349,16 @@ class _CommunicationScreenState extends State<CommunicationScreen>
                   height: sizeHeight / 1.6,
                   child:
                       isSelectedRight[0]
-                          ? SizedBox.shrink()
+                          ? Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(sizeHeight / 30),
+                            child: Text(
+                              _textFromSpeech,
+                              style: GoogleFonts.inter(
+                                fontSize: sizeHeight / 30,
+                              ),
+                            ),
+                          )
                           : _isGifLoaded
                           ? GifView.network(
                             _gifUrl,
@@ -297,10 +367,20 @@ class _CommunicationScreenState extends State<CommunicationScreen>
                           )
                           : Center(child: CircularProgressIndicator()),
                 ),
-                Icon(
-                  Iconsax.microphone_bold,
-                  size: sizeHeight / 12,
-                  color: Color.fromRGBO(140, 58, 207, 1),
+                GestureDetector(
+                  onTap: _isListening ? _stopListening : _startListening,
+                  child:
+                      _isListening
+                          ? Icon(
+                            Iconsax.microphone_slash_1_bold,
+                            size: sizeHeight / 12,
+                            color: Colors.red,
+                          )
+                          : Icon(
+                            Iconsax.microphone_bold,
+                            size: sizeHeight / 12,
+                            color: Color.fromRGBO(140, 58, 207, 1),
+                          ),
                 ),
               ],
             ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class OutputContainer extends StatelessWidget {
@@ -26,3 +28,16 @@ class OutputContainer extends StatelessWidget {
     );
   }
 }
+
+//! text to speech feature
+Future<void> textToSpeech(String text, dynamic flutterTts) async {
+  log("SPEAKING");
+  var lang = await flutterTts.getVoices;
+  log(lang.toString());
+  // lastTextSpoken = text;
+  await flutterTts.setVoice({"name": "en-AU-language", "locale": "en-AU"});
+  await flutterTts.setPitch(0.9);
+  await flutterTts.speak(text);
+}
+
+//! speech to text feature
