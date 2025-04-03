@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:signova/components/buttons.dart';
 import 'package:signova/components/crud.dart';
 import 'package:signova/components/navbar.dart';
@@ -18,28 +20,7 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
   String? username;
   final List<bool> isSelected = [true, false];
   int _selectedIndex = 0;
-  final List<Profile> profiles = [
-    Profile(
-      userId: 'jacqueline.gooding@gmail.com',
-      userName: "Jacqueline Gooding",
-      profileImageString: '',
-    ),
-    Profile(
-      userId: 'willie.reeves@gmail.com',
-      userName: "Willie Reeves",
-      profileImageString: 'assets/images/profile.png',
-    ),
-    Profile(
-      userId: 'leila.moore@gmail.com',
-      userName: "Leila Moore",
-      profileImageString: 'assets/images/profile.png',
-    ),
-    Profile(
-      userId: 'hallie.hessler@gmail.com',
-      userName: "Hallie Hessler",
-      profileImageString: 'assets/images/profile.png',
-    ),
-  ];
+  List<Profile> profiles = [];
 
   @override
   void initState() {
@@ -49,50 +30,52 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
   }
 
   void fetchProfiles() async {
-    log("Fetching user data in HomeCommunityScreen...");
+    print("Fetching user data in HomeCommunityScreen...");
 
     // Fetch the logged-in user's username
     String userId = readStorage('username');
     Map<String, dynamic>? userData = await getUserDetails(userId);
 
     if (userData != null) {
-      // log("User Data: $userData");
-
       setState(() {
         username = userData['name'] ?? 'Guest';
       });
 
-      log("Updating profiles with fetched avatars...");
+      print("Fetching profiles using getProfilesByNames...");
 
-      // Fetch and update each profile with the correct avatar
-      for (int i = 0; i < profiles.length; i++) {
-        Map<String, dynamic>? profileData = await getUserDetails(
-          profiles[i].userId,
-        );
+      String userId = readStorage('username');
+      Map<String, dynamic>? userDataFirebase = await getUserInformation(userId);
+      print("User Data: $userDataFirebase");
+      const url = 'https://01b0-2409-40e3-6b-7b21-7839-ba83-844d-f248.ngrok-free.app/recommend';
 
-        if (profileData != null) {
-          log("yester");
-          log(profileData['name']);
-          log(profileData['avatar'] ?? '');
-          setState(() {
-            profiles[i] = Profile(
-              userId: profiles[i].userId,
-              userName: profileData['name'] ?? profiles[i].userName,
-              profileImageString:
-                  profileData['avatar'] ?? '', // Store SVG string
-            );
-          });
+      final body = {
+        'username': username,
+        'age': userDataFirebase?['age'] ?? 25,
+        'job': userDataFirebase?['job'] ?? "Engineer",
+        'sex': userDataFirebase?['sex'] ?? 'f',
+        'language': userDataFirebase?['language'] ?? 'en',
+        'interests': userDataFirebase?['interests'] ?? 'football',
+        'other_interests': userDataFirebase?['other_interests'] ?? 'swimming',
+      };
+      final response = await http.post(Uri.parse(url), headers: {'Content-Type': 'application/json'}, body: json.encode(body));
 
-          log(
-            "Updated profile ${profiles[i].userId} with avatar: ${profiles[i].profileImageString}",
-          );
-        }
-      }
+      // Parse the response body to extract the recommended users
+      final responseData = json.decode(response.body);
+      List<String> recommendedUsers = List<String>.from(responseData['recommended_users']);
+
+      // Call the function from crud.dart to fetch profiles
+      List<Profile> fetchedProfiles = await getProfilesByNames(recommendedUsers);
+
+      setState(() {
+        profiles = fetchedProfiles;
+      });
+
+      print("Profiles fetched: ${profiles.length}");
     } else {
       setState(() {
         username = 'Guest';
       });
-      log("User not found!");
+      print("User not found!");
     }
   }
 
