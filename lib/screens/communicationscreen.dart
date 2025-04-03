@@ -1,4 +1,7 @@
-import 'dart:developer';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +14,7 @@ import 'package:signova/model/fetchgif.dart';
 import 'package:signova/model/camera.dart';
 import 'package:signova/components/buttons.dart';
 import 'package:signova/components/inout.dart';
-
+import 'package:signova/model/video_processing.dart'; // Import the new file
 
 class CommunicationScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -36,6 +39,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> with TickerPr
   bool _isVideoLoaded = false;
   late String _gifUrl;
   bool _isGifLoaded = false;
+  String _responseText = "hello i am very happy today and you are very beautiful"; // Default placeholder text
 
   @override
   void initState() {
@@ -55,6 +59,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> with TickerPr
         _gifUrl = gifUrl;
         _isGifLoaded = true;
       });
+      print("GIF URL: $_gifUrl");
     }
   }
 
@@ -89,12 +94,18 @@ class _CommunicationScreenState extends State<CommunicationScreen> with TickerPr
 
   //! stop video recording function
   Future<void> stopVideoRecording() async {
-    CameraHelper.stopVideoRecording(camcontroller, (XFile videoFile) {
+    CameraHelper.stopVideoRecording(camcontroller, (XFile videoFile) async {
       setState(() {
         _isRecording = false;
         _videoFile = videoFile;
       });
-      log('Video file created: ${videoFile.name}');
+      print('Video file created: ${videoFile.name}');
+
+      // Send video to backend for processing
+      final result = await sendVideoToBackend(videoFile);
+      setState(() {
+        _responseText = result; // Update the UI with the result
+      });
     });
   }
 
@@ -182,7 +193,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> with TickerPr
                   child: isSelectedLeft[0]
                       ? SingleChildScrollView(
                           child: Text(
-                            "hello i am very happy today and you are very beautiful",
+                            _responseText, // Display the updated response text
                             style: GoogleFonts.inter(),
                           ),
                         )
