@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:signova/components/buttons.dart';
 import 'package:signova/components/crud.dart';
@@ -99,11 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     showCustomSnackBar(context, 'Invalid email or password');
                     return;
                   }
+                  log("email : ${email}");
                   writeStorage('username', email);
 
                   // Perform login logic here (e.g., API call)
                   // Navigator.pushNamed(context, '/home-community');
                   String storedUser = readStorage('username');
+                  log("stored user :$storedUser");
                   if (storedUser.isNotEmpty) {
                     Navigator.pushNamed(context, '/home-community');
                   } else {

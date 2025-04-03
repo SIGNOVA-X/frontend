@@ -1,6 +1,11 @@
 class Profile {
+  final String userId;
   final String userName;
-  final String profileImageString;
+  final String? profileImageString;
 
-  Profile({required this.userName, required this.profileImageString});
+  Profile({
+    required this.userId,
+    required this.userName,
+    required this.profileImageString,
+  });
 }

@@ -70,7 +70,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     //   });
     // });
     try {
-      CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
+      await CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
         if (controller != null) {
           setState(() {
             camcontroller = controller;

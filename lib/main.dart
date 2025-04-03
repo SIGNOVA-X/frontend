@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shake_detector/shake_detector.dart';
 import 'package:signova/screens/chatbotscreen.dart';
 import 'package:signova/screens/communicationscreen.dart';
+import 'package:signova/screens/customizeprofilescreen.dart';
 import 'package:signova/screens/homecommunityscreen.dart';
 import 'package:signova/screens/landingscreen.dart';
 import 'package:signova/screens/loginscreen.dart';
@@ -171,6 +172,18 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/customize-profile') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder:
+                (context) => CustomizeProfileScreen(
+                  redirectToHome: args['redirectToHome'],
+                ),
+          );
+        }
+        return null;
+      },
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => SplashScreen(),
@@ -182,6 +195,8 @@ class _MyAppState extends State<MyApp> {
         '/profile': (context) => ProfileScreen(),
         '/chatbot': (context) => ChatbotScreen(),
         '/form': (context) => Formscreen(),
+        '/customize-profile':
+            (context) => CustomizeProfileScreen(redirectToHome: true),
       },
     );
   }

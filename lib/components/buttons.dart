@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttermoji/fluttermojiCircleAvatar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:signova/model/profile.dart';
@@ -183,31 +185,47 @@ Widget buildSocialButtons(BuildContext context, double screenWidth) {
   );
 }
 
-Widget profileBox(double sizeWidth, double sizeHeight, String profilename) {
+Widget profileBox(
+  double sizeWidth,
+  double sizeHeight,
+  String profilename,
+  String svgstring,
+) {
   return Padding(
-    padding: EdgeInsets.all(sizeWidth / 30),
+    padding: EdgeInsets.all(sizeWidth / 40),
     child: Column(
       children: [
         Container(
+          width: sizeWidth / 4.5, // Ensure fixed width for circle
+          height: sizeWidth / 4.5, // Ensure fixed height for circle
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border.all(color: Colors.black, width: 1.2),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.15),
-                blurRadius: sizeHeight / 200,
-                offset: Offset(0, 3.5),
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Color.fromRGBO(0, 0, 0, 0.15),
+            //     blurRadius: sizeHeight / 200,
+            //     offset: Offset(0, 3.5),
+            //   ),
+            // ],
             shape: BoxShape.circle,
           ),
-          child: communityprofileimage(
-            sizeHeight,
-            sizeWidth,
-            'assets/images/profile.png',
+          child: ClipOval(
+            child: SvgPicture.string(
+              svgstring,
+              width: sizeWidth / 7,
+              height: sizeWidth / 7,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
-        Text("marcelo", style: GoogleFonts.inter(color: Colors.black)),
+        Text(
+          profilename,
+          style: GoogleFonts.inter(
+            color: Colors.black,
+            fontSize: sizeWidth / 33,
+          ),
+        ),
       ],
     ),
   );
@@ -231,12 +249,16 @@ Widget profileScroll(
       scrollDirection: Axis.horizontal,
       itemCount: profiles.length,
       itemBuilder: (context, index) {
-        return profileBox(sizeWidth, sizeHeight, profiles[index].userName);
+        return profileBox(
+          sizeWidth,
+          sizeHeight,
+          profiles[index].userName,
+          profiles[index].profileImageString!,
+        );
       },
     ),
   );
 }
-
 
 class ToggleButtonComponent extends StatelessWidget {
   final List<bool> isSelected;
@@ -257,22 +279,35 @@ class ToggleButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
-      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 6),
+      constraints: BoxConstraints(
+        minWidth: MediaQuery.of(context).size.width / 6,
+      ),
       selectedColor: Colors.white,
       fillColor: Color.fromRGBO(140, 58, 207, 1),
       borderWidth: 2,
       borderRadius: BorderRadius.circular(15.0),
       onPressed: onPressed,
       isSelected: isSelected,
-      children: labels
-          .map((label) => Padding(
-                padding: EdgeInsets.all(padding ?? MediaQuery.of(context).size.width * MediaQuery.of(context).size.height * 0.00002),
-                child: Text(
-                  label,
-                  style: GoogleFonts.inter(fontSize: fontSize ?? MediaQuery.of(context).size.height / 65),
+      children:
+          labels
+              .map(
+                (label) => Padding(
+                  padding: EdgeInsets.all(
+                    padding ??
+                        MediaQuery.of(context).size.width *
+                            MediaQuery.of(context).size.height *
+                            0.00002,
+                  ),
+                  child: Text(
+                    label,
+                    style: GoogleFonts.inter(
+                      fontSize:
+                          fontSize ?? MediaQuery.of(context).size.height / 65,
+                    ),
+                  ),
                 ),
-              ))
-          .toList(),
+              )
+              .toList(),
     );
   }
 }

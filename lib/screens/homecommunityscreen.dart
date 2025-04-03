@@ -20,19 +20,23 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
   int _selectedIndex = 0;
   final List<Profile> profiles = [
     Profile(
-      userName: "marcelo",
+      userId: 'jacqueline.gooding@gmail.com',
+      userName: "Jacqueline Gooding",
+      profileImageString: '',
+    ),
+    Profile(
+      userId: 'willie.reeves@gmail.com',
+      userName: "Willie Reeves",
       profileImageString: 'assets/images/profile.png',
     ),
     Profile(
-      userName: "marcelo",
+      userId: 'leila.moore@gmail.com',
+      userName: "Leila Moore",
       profileImageString: 'assets/images/profile.png',
     ),
     Profile(
-      userName: "marcelo",
-      profileImageString: 'assets/images/profile.png',
-    ),
-    Profile(
-      userName: "marcelo",
+      userId: 'hallie.hessler@gmail.com',
+      userName: "Hallie Hessler",
       profileImageString: 'assets/images/profile.png',
     ),
   ];
@@ -41,6 +45,55 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
   void initState() {
     super.initState();
     fetchUserName();
+    fetchProfiles();
+  }
+
+  void fetchProfiles() async {
+    log("Fetching user data in HomeCommunityScreen...");
+
+    // Fetch the logged-in user's username
+    String userId = readStorage('username');
+    Map<String, dynamic>? userData = await getUserDetails(userId);
+
+    if (userData != null) {
+      // log("User Data: $userData");
+
+      setState(() {
+        username = userData['name'] ?? 'Guest';
+      });
+
+      log("Updating profiles with fetched avatars...");
+
+      // Fetch and update each profile with the correct avatar
+      for (int i = 0; i < profiles.length; i++) {
+        Map<String, dynamic>? profileData = await getUserDetails(
+          profiles[i].userId,
+        );
+
+        if (profileData != null) {
+          log("yester");
+          log(profileData['name']);
+          log(profileData['avatar'] ?? '');
+          setState(() {
+            profiles[i] = Profile(
+              userId: profiles[i].userId,
+              userName: profileData['name'] ?? profiles[i].userName,
+              profileImageString:
+                  profileData['avatar'] ?? '', // Store SVG string
+            );
+          });
+
+          log(
+            "Updated profile ${profiles[i].userId} with avatar: ${profiles[i].profileImageString}",
+          );
+        }
+      }
+    } else {
+      setState(() {
+        username = 'Guest';
+      });
+      log("User not found!");
+    }
   }
 
   void fetchUserName() async {
@@ -97,7 +150,7 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
               "Welcome",
               style: GoogleFonts.inter(
                 color: Colors.black,
-                fontSize: sizeWidth / 17,
+                fontSize: sizeWidth / 23,
                 letterSpacing: 0.4,
                 fontWeight: FontWeight.w800,
               ),
@@ -107,7 +160,7 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
               '$username!',
               style: GoogleFonts.inter(
                 color: Color.fromRGBO(140, 58, 207, 1),
-                fontSize: sizeWidth / 17,
+                fontSize: sizeWidth / 23,
                 letterSpacing: 0.4,
                 fontWeight: FontWeight.w800,
               ),

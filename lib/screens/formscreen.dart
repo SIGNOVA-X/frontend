@@ -214,7 +214,12 @@ Widget buildForm(
             await storeFormData(
               formData,
             ); // Replace 'userId' with the actual user ID
-            Navigator.pushNamed(context, '/home-community');
+            // Navigator.pushNamed(context, '/home-community');
+            Navigator.pushNamed(
+              context,
+              '/customize-profile',
+              arguments: {'redirectToHome': false},
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFAA69E3),

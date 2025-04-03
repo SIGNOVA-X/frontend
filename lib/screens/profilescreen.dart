@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fluttermoji/fluttermojiCircleAvatar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:signova/components/buttons.dart';
@@ -19,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? username;
   String? useremail;
   String? userphoneno;
+  String? avatarJson;
 
   @override
   void initState() {
@@ -48,12 +50,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         username = userData['name'] ?? 'Guest';
         useremail = userId;
         userphoneno = formData['phone'] ?? "+01 234 567 89";
+        avatarJson = userData['avatar'] ?? "assests/images/profile.png";
       });
     } else {
       setState(() {
         username = 'Guest';
         useremail = "guest@gmail.com";
         userphoneno = "+01 234 567 89";
+        avatarJson = "assests/images/profile.png";
       });
       log("User or form data not found!");
     }
@@ -120,12 +124,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   left: sizeWidth / 3,
                   bottom: sizeHeight / 90,
                 ),
-                child: circleButton(
-                  sizeHeight * 2,
-                  sizeWidth * 2,
-                  'assets/images/profile.png',
-                  false,
-                ),
+                child:
+                    avatarJson != null
+                        ? FluttermojiCircleAvatar(
+                          backgroundColor: Colors.grey[200]!,
+                          radius: sizeWidth / 6,
+                        )
+                        : circleButton(
+                          sizeHeight * 2,
+                          sizeWidth * 2,
+                          'assets/images/profile.png',
+                          false,
+                        ),
               ),
               Text(
                 username ?? "guest",
@@ -160,12 +170,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Icon((MingCute.profile_line)),
-                        SizedBox(width: sizeWidth / 14),
-                        Text("Edit profile information"),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/customize-profile',
+                          arguments: {'redirectToHome': false},
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon((MingCute.profile_line)),
+                          SizedBox(width: sizeWidth / 14),
+                          Text("Edit profile information"),
+                        ],
+                      ),
                     ),
                     SizedBox(height: sizeHeight / 120),
                     Row(
