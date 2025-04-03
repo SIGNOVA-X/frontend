@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttermoji/fluttermojiController.dart';
 import 'package:get_storage/get_storage.dart';
+import '../model/profile.dart';
 
 Future<void> addUser(String userId, String name, String password) async {
   writeStorage('username', userId);
@@ -25,6 +26,17 @@ Future<Map<String, dynamic>?> getUserDetails(String userId) async {
   if (check) {
     final doc =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    return doc.data(); // Returns a Map<String, dynamic> of the document fields
+  } else {
+    return null; // Return null if the document doesn't exist
+  }
+}
+
+Future<Map<String, dynamic>?> getUserInformation(String userId) async {
+  bool check = await checkUserExists(userId);
+  if (check) {
+    final doc =
+        await FirebaseFirestore.instance.collection('information').doc(userId).get();
     return doc.data(); // Returns a Map<String, dynamic> of the document fields
   } else {
     return null; // Return null if the document doesn't exist
@@ -125,4 +137,25 @@ Future<String?> updateUsersWithUser(String userid) async {
     log("❌ Error saving avatar: $e");
     return null;
   }
+}
+
+Future<List<Profile>> getProfilesByNames(List<String> names) async {
+  List<Profile> profiles = [];
+  try {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('name', whereIn: names)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      profiles.add(Profile(
+        userId: doc.id,
+        userName: doc['name'],
+        profileImageString: doc['avatar'] ?? null,
+      ));
+    }
+  } catch (e) {
+    print("Error fetching profiles: $e");
+  }
+  return profiles;
 }

@@ -84,11 +84,11 @@ class _CommunicationScreenState extends State<CommunicationScreen>
             _isCameraInitialized = true;
           });
         } else {
-          log("CameraController initialization failed.");
+          print("CameraController initialization failed.");
         }
       });
     } catch (e) {
-      log("Camera setup error: $e");
+      print("Camera setup error: $e");
     }
   }
 
@@ -114,7 +114,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
 
   //! stop video recording function
   Future<void> stopVideoRecording() async {
-    CameraHelper.stopVideoRecording(camcontroller, (XFile videoFile) async {
+    CameraHelper.stopVideoRecording(camcontroller!, (XFile videoFile) async {
       setState(() {
         _isRecording = false;
         _videoFile = videoFile;
