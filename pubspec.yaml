@@ -93,6 +93,7 @@ flutter:
     - assets/images/profile.png
     - assets/images/chatbot_bg.png
     - assets/images/chatbot.png
+    - assets/images/profile_bg.png
     - .env
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
