@@ -59,14 +59,22 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
         'interests': userDataFirebase?['interests'] ?? 'football',
         'other_interests': userDataFirebase?['other_interests'] ?? 'swimming',
       };
-      final response = await http.post(Uri.parse(url), headers: {'Content-Type': 'application/json'}, body: json.encode(body));
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(body),
+      );
 
       // Parse the response body to extract the recommended users
       final responseData = json.decode(response.body);
-      List<String> recommendedUsers = List<String>.from(responseData['recommended_users']);
+      List<String> recommendedUsers = List<String>.from(
+        responseData['recommended_users'],
+      );
 
       // Call the function from crud.dart to fetch profiles
-      List<Profile> fetchedProfiles = await getProfilesByNames(recommendedUsers);
+      List<Profile> fetchedProfiles = await getProfilesByNames(
+        recommendedUsers,
+      );
 
       setState(() {
         profiles = fetchedProfiles;
@@ -98,26 +106,6 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
         username = 'Jane';
       });
       log("User not found!");
-    }
-  }
-
-  void _onTabChange(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Navigate based on selected index
-    switch (index) {
-      case 0:
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/communication');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/chatbot');
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
     }
   }
 
@@ -211,10 +199,7 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
-      ),
+      bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );
   }
 }

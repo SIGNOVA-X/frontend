@@ -1,7 +1,8 @@
-import 'dart:convert';
+import 'dart:developer';
 
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_to_text.dart' as sst;
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +45,25 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   bool _isVideoLoaded = false;
   late String _gifUrl;
   bool _isGifLoaded = false;
+
+  // tts and stt
+  FlutterTts flutterTts = FlutterTts();
   String _responseText =
-      "hello i am very happy today and you are very beautiful"; // Default placeholder text
+      "hello i am very happy today "; // Default placeholder text
+  // final List<bool> _playAudio = [true,false];
+  bool _playAudio = true;
+  bool _isListening = false;
+  late sst.SpeechToText speech;
+  String _textFromSpeech = "Press the mic and start speaking...";
 
   @override
   void initState() {
     super.initState();
+    speech = sst.SpeechToText();
     _setUpCamera(_selectedCameraIndex);
     _fetchGifUrlFromApi();
+    initializeTts();
+    _startListening();
   }
 
   Future<void> _fetchGifUrlFromApi() async {
@@ -59,7 +71,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
       _isGifLoaded = false; // Reset GIF loading state
     });
 
-    String? gifUrl = await GifFetcher.fetchGifUrl("what are you doing");
+    String? gifUrl = await GifFetcher.fetchGifUrl(_textFromSpeech);
     if (gifUrl != null && mounted) {
       setState(() {
         _gifUrl = gifUrl;
@@ -70,12 +82,6 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   }
 
   Future<void> _setUpCamera(int camIndex) async {
-    // CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
-    //   setState(() {
-    //     camcontroller = controller!;
-    //     _isCameraInitialized = true;
-    //   });
-    // });
     try {
       await CameraHelper.setUpCamera(widget.cameras, camIndex, (controller) {
         if (controller != null) {
@@ -98,7 +104,6 @@ class _CommunicationScreenState extends State<CommunicationScreen>
       setState(() {
         _selectedCameraIndex = newIndex;
       });
-      camcontroller?.dispose();
       _setUpCamera(_selectedCameraIndex);
     });
   }
@@ -146,9 +151,48 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     });
   }
 
+  void initializeTts() {
+    flutterTts.setStartHandler(() {
+      log("TTS playback started");
+    });
+    flutterTts.setCompletionHandler(() {
+      log("TTS playback finished");
+    });
+    flutterTts.setErrorHandler((msg) {
+      log("TTS playback error: $msg");
+    });
+  }
+
+  void _startListening() async {
+    bool available = await speech.initialize(
+      onStatus: (status) => log("Status: $status"),
+      onError: (error) => log("Error: $error"),
+    );
+    if (available) {
+      setState(() {
+        _isListening = true;
+      });
+      speech.listen(
+        listenFor: Duration(seconds: 10),
+        onResult: (result) {
+          log(result.toString());
+          setState(() {
+            _textFromSpeech = result.recognizedWords;
+          });
+        },
+      );
+    }
+  }
+
+  void _stopListening() {
+    speech.stop();
+    setState(() {
+      _isListening = false;
+    });
+  }
+
   @override
   void dispose() {
-    // camcontroller?.dispose();
     if (_isCameraInitialized) {
       camcontroller!.dispose();
     }
@@ -158,49 +202,36 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     super.dispose();
   }
 
-  void _onTabChange(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Navigate based on selected index
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home-community');
-        break;
-      case 2:
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/chatbot');
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double sizeWidth = MediaQuery.of(context).size.width;
     double sizeHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(backgroundColor: Colors.transparent),
-      body: Row(
+      appBar: AppBar(backgroundColor: Colors.black),
+      body: Column(
         children: [
           Container(
-            height: sizeHeight,
-            width: sizeWidth / 2,
+            height: sizeHeight / 2.5,
+            width: sizeWidth,
             decoration: BoxDecoration(
-              border: Border.symmetric(
-                vertical: BorderSide(color: Colors.black, width: 1.2),
-                horizontal: BorderSide.none,
+              border: BorderDirectional(
+                bottom: BorderSide(color: Colors.black, width: 1),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black,
+                  Color.fromRGBO(64, 4, 94, 1),
+                  Color.fromRGBO(99, 0, 126, 1),
+                ],
               ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: sizeHeight / 10),
+                SizedBox(height: sizeHeight / 50),
                 ToggleButtonComponent(
                   isSelected: isSelectedLeft,
                   labels: ["Text", "Audio"],
@@ -212,60 +243,97 @@ class _CommunicationScreenState extends State<CommunicationScreen>
                     });
                   },
                 ),
-                OutputContainer(
-                  child:
-                      isSelectedLeft[0]
-                          ? SingleChildScrollView(
-                            child: Text(
-                              _responseText, // Display the updated response text
-                              style: GoogleFonts.inter(),
-                            ),
-                          )
-                          : Icon(Icons.audiotrack_rounded),
-                ),
-                CameraPreviewComponent(
-                  camcontroller: camcontroller,
-                  isCameraInitialized: _isCameraInitialized,
-                  isCameraEnabled: _isCameraEnabled,
-                ),
-                SizedBox(height: sizeHeight / 30),
                 Row(
                   children: [
-                    IconButton(
-                      onPressed: _onSwitchCamera,
-                      icon: Icon(CupertinoIcons.switch_camera_solid),
+                    CameraPreviewComponent(
+                      camcontroller: camcontroller,
+                      isCameraInitialized: _isCameraInitialized,
+                      isCameraEnabled: _isCameraEnabled,
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        onRecordButtonPressed();
-                      },
-                      icon: Icon(
-                        _isRecording
-                            ? Icons.pause_circle_filled
-                            : Icons.play_circle_fill,
-                      ),
-                      iconSize: sizeHeight / 14,
-                      color: Color.fromRGBO(140, 58, 207, 1),
+                    Column(
+                      children: [
+                        IconButton(
+                          onPressed: _onSwitchCamera,
+                          icon: Icon(CupertinoIcons.switch_camera_solid),
+                          color: Colors.grey,
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            onRecordButtonPressed();
+                          },
+                          icon: Icon(
+                            _isRecording
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_fill,
+                          ),
+                          iconSize: sizeHeight / 20,
+                          color: Colors.white,
+                        ),
+                        IconButton(
+                          onPressed: _toggleCamera,
+                          icon:
+                              _isCameraEnabled
+                                  ? Icon(Iconsax.camera_bold)
+                                  : Icon(Iconsax.camera_slash_bold),
+                          color: Colors.grey,
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: _toggleCamera,
-                      icon:
-                          _isCameraEnabled
-                              ? Icon(Iconsax.camera_bold)
-                              : Icon(Iconsax.camera_slash_bold),
+                    OutputContainer(
+                      child:
+                          isSelectedLeft[0]
+                              ? SingleChildScrollView(
+                                child: Text(
+                                  _responseText, // Display the updated response text
+                                  style: GoogleFonts.inter(color: Colors.white),
+                                ),
+                              )
+                              : InkWell(
+                                onTap: () async {
+                                  setState(() {
+                                    _playAudio = !_playAudio;
+                                  });
+                                  if (_playAudio) {
+                                    await textToSpeech(
+                                      _responseText,
+                                      flutterTts,
+                                    );
+                                  }
+                                },
+                                child:
+                                    _playAudio
+                                        ? Icon(
+                                          Icons.multitrack_audio_outlined,
+                                          color: Colors.white,
+                                        )
+                                        : Icon(
+                                          Icons.audiotrack_rounded,
+                                          color: Colors.white,
+                                        ),
+                              ),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: sizeHeight,
-            width: sizeWidth / 2,
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.white,
+                  Color.fromRGBO(208, 185, 219, 1),
+                  Color.fromRGBO(99, 0, 126, 1),
+                ],
+              ),
+            ),
+            height: sizeHeight / 2.49,
+            width: sizeWidth,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: sizeHeight / 10),
                 ToggleButtonComponent(
                   isSelected: isSelectedRight,
                   labels: ["Text", "Avatar"],
@@ -285,32 +353,62 @@ class _CommunicationScreenState extends State<CommunicationScreen>
                   },
                 ),
                 Container(
-                  height: sizeHeight / 1.6,
                   child:
                       isSelectedRight[0]
-                          ? SizedBox.shrink()
-                          : _isGifLoaded
-                          ? GifView.network(
-                            _gifUrl,
-                            fit: BoxFit.contain,
-                            loop: true,
+                          ? Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(
+                              vertical: sizeHeight / 30,
+                              horizontal: sizeWidth / 10,
+                            ),
+                            padding: EdgeInsets.all(sizeHeight / 40),
+                            child: SingleChildScrollView(
+                              child: Text(
+                                _textFromSpeech,
+                                style: GoogleFonts.inter(
+                                  fontSize: sizeHeight / 50,
+                                ),
+                              ),
+                            ),
                           )
-                          : Center(child: CircularProgressIndicator()),
+                          : Container(
+                            height: sizeHeight / 4.6,
+                            width: sizeWidth / 3,
+                            child:
+                                _isGifLoaded
+                                    ? GifView.network(
+                                      _gifUrl,
+                                      fit: BoxFit.contain,
+                                      loop: true,
+                                    )
+                                    : Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                          ),
                 ),
-                Icon(
-                  Iconsax.microphone_bold,
-                  size: sizeHeight / 12,
-                  color: Color.fromRGBO(140, 58, 207, 1),
+                SizedBox(height: sizeHeight / 30),
+                GestureDetector(
+                  onTap: _isListening ? _stopListening : _startListening,
+                  child:
+                      _isListening
+                          ? Icon(
+                            Iconsax.microphone_slash_1_bold,
+                            size: sizeHeight / 20,
+                            color: Colors.red,
+                          )
+                          : Icon(
+                            Iconsax.microphone_bold,
+                            size: sizeHeight / 20,
+                            color: Colors.black,
+                          ),
                 ),
+                SizedBox(height: sizeHeight / 30),
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
-      ),
+      bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );
   }
 }

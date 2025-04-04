@@ -1,10 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CameraHelper {
   static Future<CameraController?> setUpCamera(
-      List<CameraDescription> cameras, int camIndex, Function onInitialized) async {
+    List<CameraDescription> cameras,
+    int camIndex,
+    Function onInitialized,
+  ) async {
     if (cameras.isNotEmpty) {
       try {
         CameraController camController = CameraController(
@@ -25,15 +29,21 @@ class CameraHelper {
   }
 
   static void switchCamera(
-      List<CameraDescription> cameras, int currentIndex, Function onSwitch) {
+    List<CameraDescription> cameras,
+    int currentIndex,
+    Function onSwitch,
+  ) {
     if (cameras.length < 2) return;
     int newIndex = (currentIndex + 1) % cameras.length;
     onSwitch(newIndex); // Callback to update the state
   }
 
   static Future<void> startVideoRecording(
-      CameraController camController, Function onStart) async {
-    if (!camController.value.isInitialized || camController.value.isRecordingVideo) {
+    CameraController camController,
+    Function onStart,
+  ) async {
+    if (!camController.value.isInitialized ||
+        camController.value.isRecordingVideo) {
       return;
     }
 
@@ -46,7 +56,9 @@ class CameraHelper {
   }
 
   static Future<void> stopVideoRecording(
-      CameraController camController, Function onStop) async {
+    CameraController camController,
+    Function onStop,
+  ) async {
     if (!camController.value.isRecordingVideo) return;
 
     try {
@@ -62,7 +74,6 @@ class CameraHelper {
   }
 }
 
-
 class CameraPreviewComponent extends StatelessWidget {
   final CameraController? camcontroller;
   final bool isCameraInitialized;
@@ -77,16 +88,26 @@ class CameraPreviewComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: isCameraInitialized && isCameraEnabled
-          ? CameraPreview(camcontroller!)
-          : Center(
-              child: Text(
-                isCameraEnabled ? "Loading Camera..." : "Camera Disabled",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.height / 85,
+      ),
+      height: MediaQuery.of(context).size.height / 3.7,
+      width: MediaQuery.of(context).size.height / 5.8,
+      child:
+          isCameraInitialized && isCameraEnabled
+              ? CameraPreview(camcontroller!)
+              : Center(
+                child: Text(
+                  isCameraEnabled ? "Loading Camera..." : "Camera Disabled",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
     );
   }
 }
-

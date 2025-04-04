@@ -7,6 +7,7 @@ class GifFetcher {
     try {
       var ngrokurl = dotenv.env['NGROK_URL']!;
       String apiUrl = '$ngrokurl/translate';
+
       var body = {"text": text};
       var headers = {"Content-Type": "application/json"};
 

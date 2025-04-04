@@ -63,29 +63,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _onTabChange(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    // Navigate based on selected index
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home-community');
-        break;
-      case 1:
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/communication');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/chatbot');
-        break;
-      case 4:
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double sizeHeight = MediaQuery.of(context).size.height;
@@ -301,10 +278,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(sizeWidth / 60),
-        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
-      ),
+      bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );
   }
 }

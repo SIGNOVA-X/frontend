@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
-// import 'package:another_telephony/telephony.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shake_detector/shake_detector.dart';
+import 'package:signova/components/crud.dart';
 import 'package:signova/screens/chatbotscreen.dart';
 import 'package:signova/screens/communicationscreen.dart';
 import 'package:signova/screens/customizeprofilescreen.dart';
@@ -43,10 +43,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final String message = "Emergency! Please help!";
-  final String phoneNumber = "+917842226345";
-  // final List<String> emergencyContacts = [
-  //   "+917842226345",
-  // ]; //check this after
+  // final String phoneNumber = "+917842226345";
 
   // Location variables
   Position? _currentPosition;
@@ -58,6 +55,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    writeStorage('emergency_contact', '+917842226345');
     _getCurrentLocation();
   }
 
@@ -102,6 +100,8 @@ class _MyAppState extends State<MyApp> {
       return;
     }
     log("reached in sendemergencysms function");
+    String emergencyNumber = readStorage('emergency_contact');
+    log(emergencyNumber);
     String locationMessage =
         "Emergency! My current location is: https://www.google.com/maps/search/?api=1&query=${_currentPosition!.latitude},${_currentPosition!.longitude}";
     log(locationMessage);
@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> {
       await telephony.requestPermission();
       // Send SMS without using return value
       telephony.sendSMS(
-        phone: phoneNumber, // Recipient's phone number
+        phone: emergencyNumber, // Recipient's phone number
         message: locationMessage,
       );
       log("SMS Sent: $locationMessage");

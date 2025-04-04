@@ -282,21 +282,25 @@ class ToggleButtonComponent extends StatelessWidget {
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width / 6,
       ),
+      color: Colors.white,
       selectedColor: Colors.white,
-      fillColor: Color.fromRGBO(140, 58, 207, 1),
-      borderWidth: 2,
+      fillColor: Color.fromRGBO(99, 0, 126, 1),
+      renderBorder: true,
+      borderWidth: 1,
+      borderColor: Colors.white,
+      selectedBorderColor: Colors.white,
       borderRadius: BorderRadius.circular(15.0),
       onPressed: onPressed,
       isSelected: isSelected,
       children:
           labels
               .map(
-                (label) => Padding(
+                (label) => Container(
                   padding: EdgeInsets.all(
                     padding ??
                         MediaQuery.of(context).size.width *
                             MediaQuery.of(context).size.height *
-                            0.00002,
+                            0.00004,
                   ),
                   child: Text(
                     label,

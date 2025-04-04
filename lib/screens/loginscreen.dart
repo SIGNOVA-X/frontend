@@ -104,10 +104,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   log("email : ${email}");
                   writeStorage('username', email);
 
-                  // Perform login logic here (e.g., API call)
-                  // Navigator.pushNamed(context, '/home-community');
                   String storedUser = readStorage('username');
                   log("stored user :$storedUser");
+
+                  // setting emergency contact
+                  Map<String, dynamic>? formData = await getFormData();
+                  String? favoritePerson;
+                  if (formData != null) {
+                    favoritePerson =
+                        formData['favoritePerson'] ?? "+917842226345";
+                    log("Favorite Person: $favoritePerson");
+                  } else {
+                    log("No form data found.");
+                  }
+                  writeStorage('emergency_contact', favoritePerson!);
                   if (storedUser.isNotEmpty) {
                     Navigator.pushNamed(context, '/home-community');
                   } else {
