@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:camera/camera.dart';
 
 Future<String> videoToText() async {
   try {
-    final url = Uri.parse('https://01b0-2409-40e3-6b-7b21-7839-ba83-844d-f248.ngrok-free.app/predict-all-images');
+    var ngrokurl = dotenv.env['NGROK_URL']!;
+    final url = Uri.parse('$ngrokurl/predict-all-images');
     final response = await http.post(url);
 
     if (response.statusCode == 200) {
@@ -32,7 +34,8 @@ Future<String> videoToText() async {
 
 Future<String> sendVideoToBackend(XFile videoFile) async {
   try {
-    final url = Uri.parse('https://01b0-2409-40e3-6b-7b21-7839-ba83-844d-f248.ngrok-free.app/convert-image'); // Backend endpoint
+    var ngrokurl = dotenv.env['NGROK_URL']!;
+    final url = Uri.parse('$ngrokurl/convert-image'); // Backend endpoint
     final request = http.MultipartRequest('POST', url)
       ..files.add(await http.MultipartFile.fromPath('video', videoFile.path));
 
