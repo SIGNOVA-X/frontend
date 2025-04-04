@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class GifFetcher {
   static Future<String?> fetchGifUrl(String text) async {
     try {
-      String apiUrl = 'https://b90d-117-219-22-193.ngrok-free.app/translate';
+      var ngrokurl = dotenv.env['NGROK_URL']!;
+      String apiUrl = '$ngrokurl/translate';
+
       var body = {"text": text};
       var headers = {"Content-Type": "application/json"};
 

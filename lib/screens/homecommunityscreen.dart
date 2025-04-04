@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:signova/components/buttons.dart';
@@ -46,7 +47,8 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
       String userId = readStorage('username');
       Map<String, dynamic>? userDataFirebase = await getUserInformation(userId);
       print("User Data: $userDataFirebase");
-      const url = 'https://b90d-117-219-22-193.ngrok-free.app/recommend';
+      var ngrokurl = dotenv.env['NGROK_URL']!;
+      var url = '$ngrokurl/recommend';
 
       final body = {
         'username': username,

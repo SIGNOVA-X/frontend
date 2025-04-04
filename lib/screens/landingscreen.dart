@@ -1,61 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:math';
 
-class LandingScreen extends StatefulWidget {
+class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
 
-  @override
-  State<LandingScreen> createState() => _LandingScreenState();
-}
-
-class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.05,
-          ), // Responsive horizontal padding
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/landing_background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage('assets/images/signovax.png'),
-                width: screenWidth * 0.75, // Responsive image width
-              ),
-              SizedBox(height: screenHeight * 0.03), // Responsive spacing
-              Text(
-                'Welcome to',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.06, // Responsive font size
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text.rich(
-                TextSpan(
+            children: [
+              Spacer(flex: 2), // Push content down to position SIGNOVA-X above center
+              RichText(
+                text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'SIG',
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.12, // Responsive font size
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                      text: 'SIGNOVA-',
+                      style: GoogleFonts.italiana(
+                        fontSize: screenWidth * 0.15,
+                        color: Colors.white,
                       ),
                     ),
                     TextSpan(
-                      text: 'NOVA',
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.12, // Responsive font size
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFAA69E3),
+                      text: 'X',
+                      style: GoogleFonts.italiana(
+                        fontSize: screenWidth * 0.15,
+                        color: const Color(0xFFAF98BF),
                       ),
                     ),
                   ],
@@ -64,78 +45,108 @@ class _LandingScreenState extends State<LandingScreen> {
               ),
               Text(
                 'Empowering Conversations Beyond Words',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035, // Responsive font size
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF474747),
+                style: GoogleFonts.inter(
+                  fontSize: screenWidth * 0.035,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: screenHeight * 0.02), // Responsive spacing
-              Text(
-                'A seamless communication platform bridging the gap for the deaf and mute community.',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035, // Responsive font size
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF474747),
+              Spacer(flex: 3),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1), // Add horizontal padding
+                child: Text(
+                  'A seamless communication platform bridging the gap for the deaf and mute community.',
+                  style: GoogleFonts.inter(
+                    fontSize: screenWidth * 0.03,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center, // Ensure proper alignment for multi-line text
                 ),
-                textAlign: TextAlign.center,
               ),
-              SizedBox(height: screenHeight * 0.05), // Responsive spacing
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFAA69E3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      minimumSize: Size(
-                        screenWidth * 0.4,
-                        screenHeight * 0.05,
-                      ), // Responsive button size
-                    ),
-                    child: Text(
-                      'Get Started',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.04, // Responsive font size
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: screenWidth * 0.05), // Responsive spacing
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: Color(0xFFAA69E3)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      minimumSize: Size(
-                        screenWidth * 0.4,
-                        screenHeight * 0.05,
-                      ), // Responsive button size
-                    ),
-                    child: Text(
-                      'Log in',
-                      style: TextStyle(
-                        color: Color(0xFF474747),
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        fontSize: screenWidth * 0.04, // Responsive font size
+              SizedBox(
+                width: min(screenWidth * 0.015, 30),
+                height: min(screenHeight * 0.015, 30),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: screenHeight * 0.05),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: screenWidth * 0.4, // Set fixed width for both buttons
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFAF98BF), Color(0xFF5A189A)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02,
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: Text(
+                            'Get Started',
+                            style: GoogleFonts.inter(
+                              fontSize: screenWidth * 0.045,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: screenWidth * 0.05), // Space between buttons
+                    SizedBox(
+                      width: screenWidth * 0.4, // Set fixed width for both buttons
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFAF98BF), Color(0xFF5A189A)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenHeight * 0.02,
+                            ),
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: Text(
+                            'Log In',
+                            style: GoogleFonts.inter(
+                              fontSize: screenWidth * 0.045,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
