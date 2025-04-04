@@ -60,164 +60,157 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     }
   }
 
-  void _onTabChange(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    // Navigate based on selected index
-    switch (index) {
-      case 0:
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/communication');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/chatbot');
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double sizeWidth = MediaQuery.of(context).size.width;
     double sizeHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent),
-      extendBodyBehindAppBar: true,
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              color: Color.fromRGBO(234, 218, 250, 1),
-              child: Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      width: sizeWidth / 3,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(sizeHeight / 55),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.black),
-                        shape: BoxShape.circle,
-                        color: Color.fromRGBO(0, 0, 0, 0.8),
-                      ),
-                      child: Image(image: AssetImage('assets/robot.png')),
-                    ),
+    return PopScope(
+      canPop: false, // Disable default pop behavior
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          Navigator.pushReplacementNamed(context, '/home-community');
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(backgroundColor: Colors.transparent),
+        extendBodyBehindAppBar: true,
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromRGBO(110, 60, 124, 1.0),
+                      Color.fromRGBO(15, 10, 33, 1),
+                      Colors.black,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
-                  ListView.builder(
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      final message = _messages[index];
-                      return ListTile(
-                        title: Align(
-                          alignment:
-                              message.isUser
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                          child: Container(
-                            padding: EdgeInsets.all(sizeHeight / 60),
-                            decoration: BoxDecoration(
-                              color:
-                                  message.isUser
-                                      ? Color.fromRGBO(90, 24, 154, 1)
-                                      : Colors.white,
-                              borderRadius:
-                                  message.isUser
-                                      ? BorderRadius.only(
-                                        topLeft: Radius.circular(12),
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12),
-                                      )
-                                      : BorderRadius.only(
-                                        topRight: Radius.circular(12),
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12),
-                                      ),
-                            ),
-                            child: Text(
-                              message.text,
-                              style: GoogleFonts.inter(
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: sizeWidth / 1.7,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(sizeHeight / 70),
+                        child: Image.asset('assets/images/chatbot_bg.png'),
+                      ),
+                    ),
+                    ListView.builder(
+                      itemCount: _messages.length,
+                      itemBuilder: (context, index) {
+                        final message = _messages[index];
+                        return ListTile(
+                          title: Align(
+                            alignment:
+                                message.isUser
+                                    ? Alignment.centerRight
+                                    : Alignment.centerLeft,
+                            child: Container(
+                              padding: EdgeInsets.all(sizeHeight / 60),
+                              decoration: BoxDecoration(
                                 color:
                                     message.isUser
-                                        ? Colors.white
-                                        : Color.fromRGBO(0, 0, 0, 1),
+                                        ? Color.fromRGBO(110, 60, 124, 1.0)
+                                        : Colors.white,
+                                borderRadius:
+                                    message.isUser
+                                        ? BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                        )
+                                        : BorderRadius.only(
+                                          topRight: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                        ),
+                              ),
+                              child: Text(
+                                message.text,
+                                style: GoogleFonts.inter(
+                                  color:
+                                      message.isUser
+                                          ? Colors.white
+                                          : Color.fromRGBO(0, 0, 0, 1),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
 
-          //! User input
-          Padding(
-            padding: EdgeInsets.only(
-              right: sizeWidth / 300,
-              left: sizeWidth / 300,
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: sizeWidth / 30,
-                vertical: sizeHeight / 70,
+            //! User input
+            Padding(
+              padding: EdgeInsets.only(
+                right: sizeWidth / 300,
+                left: sizeWidth / 300,
               ),
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(234, 218, 250, 1),
-              ),
-              // margin: EdgeInsets.only(bottom: sizeHeight / 23),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _userinputcontroller,
-                      decoration: InputDecoration(
-                        hintText: "Write your message here...",
-                        hintStyle: GoogleFonts.inter(
-                          color: Color.fromRGBO(0, 0, 0, 0.3),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(sizeHeight / 28),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: sizeWidth / 30,
+                  vertical: sizeHeight / 70,
+                ),
+                decoration: BoxDecoration(color: Color.fromRGBO(4, 4, 4, 1)),
+                child: Container(
+                  padding: EdgeInsets.all(sizeHeight / 90),
+                  margin: EdgeInsets.only(
+                    bottom: sizeHeight / 60,
+                    right: sizeWidth / 40,
+                    left: sizeWidth / 40,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _userinputcontroller,
+                          decoration: InputDecoration(
+                            hintText: "Type a message",
+                            hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(0, 0, 0, 0.7),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding: EdgeInsets.all(sizeHeight / 90),
                           ),
                         ),
-                        contentPadding: EdgeInsets.all(sizeHeight / 90),
                       ),
-                    ),
+                      SizedBox(width: sizeWidth / 40),
+                      GestureDetector(
+                        onTap: callGeminiModel,
+                        child: Container(
+                          padding: EdgeInsets.all(sizeHeight / 200),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            size: sizeHeight / 23,
+                            color: Color.fromRGBO(0, 0, 0, 0.8),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: sizeWidth / 40),
-                  GestureDetector(
-                    onTap: callGeminiModel,
-                    child: Container(
-                      padding: EdgeInsets.all(sizeHeight / 70),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(90, 24, 154, 1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Iconsax.send_2_outline,
-                        size: sizeHeight / 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-        child: gbottomnavbar(context, _selectedIndex, _onTabChange),
+          ],
+        ),
       ),
     );
   }

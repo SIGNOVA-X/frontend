@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class GifFetcher {
   static Future<String?> fetchGifUrl(String text) async {
     try {
-      String apiUrl = 'https://01b0-2409-40e3-6b-7b21-7839-ba83-844d-f248.ngrok-free.app/translate';
+      String apiUrl = 'https://b90d-117-219-22-193.ngrok-free.app/translate';
       var body = {"text": text};
       var headers = {"Content-Type": "application/json"};
 
