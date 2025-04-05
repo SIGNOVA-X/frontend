@@ -24,6 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? emergency_contact = "+91 1234567890";
   String? avatarJson;
   String? userpassword = "**";
+  String? userbio;
 
   @override
   void initState() {
@@ -55,6 +56,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         emergency_contact = emergency;
         userphoneno = formData['phone'] ?? "+01 234 567 89";
         avatarJson = userData['avatar'] ?? "assests/images/profile.png";
+        userbio =
+            formData['bio'] ??
+            "Hi I am a professional photographer and love to visit new places.";
       });
     } else {
       setState(() {
@@ -132,7 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: sizeWidth / 1.5,
                     alignment: Alignment.center,
                     child: Text(
-                      "Hi I am a professional photographer and love to visit new places.",
+                      (userbio != null && userbio!.length > 50)
+                          ? '${userbio!.substring(0, 55)}...'
+                          : (userbio ?? ''),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.lifeSavers(
                         color: Colors.black,

@@ -78,7 +78,13 @@ class _CustomizeProfileScreenState extends State<CustomizeProfileScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Customize Avatar")),
+      backgroundColor: Colors.black, // Dark background
+      appBar: AppBar(
+        title: Text("Customize Avatar"),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white, // Light text
+        elevation: 0,
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -88,7 +94,7 @@ class _CustomizeProfileScreenState extends State<CustomizeProfileScreen> {
                 padding: EdgeInsets.symmetric(vertical: sizeHeight / 35),
                 child: FluttermojiCircleAvatar(
                   radius: 100,
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: Colors.grey[900], // Dark grey bg
                 ),
               ),
               SizedBox(
@@ -97,10 +103,31 @@ class _CustomizeProfileScreenState extends State<CustomizeProfileScreen> {
                   children: [
                     Text(
                       "Customize:",
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                      ), // Light text
                     ),
                     Spacer(),
-                    FluttermojiSaveWidget(onTap: saveAvatar),
+                    FluttermojiSaveWidget(
+                      onTap: saveAvatar,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // Button stands out
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -113,7 +140,18 @@ class _CustomizeProfileScreenState extends State<CustomizeProfileScreen> {
                   scaffoldWidth: sizeWidth * 0.85,
                   autosave: false,
                   theme: FluttermojiThemeData(
-                    boxDecoration: BoxDecoration(boxShadow: [BoxShadow()]),
+                    boxDecoration: BoxDecoration(
+                      color: Colors.grey[900], // Dark container
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    selectedIconColor: Colors.white,
+                    iconColor: Colors.grey[400],
+                    labelTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    primaryBgColor: Colors.deepPurple,
+                    secondaryBgColor: Colors.grey[200],
                   ),
                 ),
               ),
