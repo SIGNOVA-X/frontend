@@ -39,7 +39,7 @@ Using speech-to-text and NLP models, spoken input from hearing users is translat
 
 
 ### 🧬 AI-Powered Friend Suggestion System
-SUPANOVA enhances social connectivity using an AI-driven profile-matching algorithm. During sign-up, users input hobbies, interests, and preferences, which are analyzed to recommend compatible friends and expand their social circles.
+SIGNOVA enhances social connectivity using an AI-driven profile-matching algorithm. During sign-up, users input hobbies, interests, and preferences, which are analyzed to recommend compatible friends and expand their social circles.
 
 ### 🧑‍⚕️ Mental Health Support Chatbot
 Address emotional struggles and isolation with a 24/7 motivational chatbot tailored for the deaf community. It offers empathetic support to promote mental resilience and reduce feelings of loneliness.
@@ -58,14 +58,14 @@ A clean, intuitive interface built with accessibility in mind. Designed to accom
 
 
 ### 🔐 Privacy-First Design
-All user interactions—including sign, voice, and location data—are securely processed using end-to-end encryption. SUPANOVA follows strict privacy standards to keep your communication confidential.
+All user interactions—including sign, voice, and location data—are securely processed using end-to-end encryption. SIGNOVA follows strict privacy standards to keep your communication confidential.
 
 
 ---
 
-##  Future Scope of SUPANOVA
+##  Future Scope of SIGNOVA
 
-At **SUPANOVA**, we’re committed to pushing the boundaries of accessibility, inclusion, and meaningful human connection. Below are the upcoming features and innovations we plan to integrate to further empower the deaf and mute community:
+At **SIGNOVA**, we’re committed to pushing the boundaries of accessibility, inclusion, and meaningful human connection. Below are the upcoming features and innovations we plan to integrate to further empower the deaf and mute community:
 
 ### Google Meet Integration for Inclusive Meetings
 Imagine a virtual space where deaf individuals can actively participate in online meetings.
@@ -79,7 +79,7 @@ Imagine a virtual space where deaf individuals can actively participate in onlin
 ### Name Recognition & Smart Vibration Alerts
 Deaf individuals often miss cues like someone calling their name.
 
-- Future versions of SUPANOVA will:
+- Future versions of SIGNOVA will:
   - Use ambient sound detection to recognize when the user’s name is spoken nearby.
   - Trigger a gentle **vibration alert** on their phone.
 - This feature helps users stay alert and engaged in their environment.
@@ -88,7 +88,7 @@ Deaf individuals often miss cues like someone calling their name.
 ###  Therapist Support & Emotional Wellness
 Many users silently struggle with loneliness, anxiety, or depression due to communication barriers.
 
-- SUPANOVA aims to offer:
+- SIGNOVA aims to offer:
   - In-app access to **licensed therapists** trained in supporting people with disabilities.
   - Mental health resources and empathy-driven care within a safe space.
 
@@ -115,7 +115,7 @@ Track and visualize your personal communication journey.
 ### Multi-Language Support & Regional Sign Variants
 Sign languages are not universal. To support global diversity:
 
-- SUPANOVA will support:
+- SIGNOVA will support:
   - Regional sign languages like **ISL, ASL, BSL**, and more.
   - Real-time translation of spoken languages into their **local sign language variants**.
 
@@ -123,7 +123,7 @@ Sign languages are not universal. To support global diversity:
 ### Community Volunteering & Listener Program
 We envision a supportive community built on empathy.
 
-- SUPANOVA will introduce:
+- SIGNOVA will introduce:
   - A **volunteer listener program** connecting hearing individuals with deaf users.
   - Opportunities to offer support, companionship, or simply be a friend.
 
@@ -132,9 +132,9 @@ This initiative strengthens community bonds through shared conversations and mut
 ---
 
 
-## 📖 How to Use SUPANOVA
+## 📖 How to Use SIGNOVA
 
-**SUPANOVA** is designed to help deaf and mute individuals communicate, connect, and feel supported. Here's a simple step-by-step guide to get started and explore each powerful feature:
+**SIGNOVA** is designed to help deaf and mute individuals communicate, connect, and feel supported. Here's a simple step-by-step guide to get started and explore each powerful feature:
 
 ---
 
@@ -152,7 +152,7 @@ Head over to the **Live Communication** section.
 
 The screen is divided into two parts:
 
-- 👋 **Left Side (Deaf/Mute User):** Show your sign language gestures to the camera. SUPANOVA captures and converts them into real-time English text using AI.
+- 👋 **Left Side (Deaf/Mute User):** Show your sign language gestures to the camera. SIGNOVA captures and converts them into real-time English text using AI.
 - 🗣️ **Right Side (Hearing User):** The other user speaks into the mic. Their voice is transcribed and translated into sign language through an animated avatar.
 
 This enables smooth, real-time two-way communication regardless of hearing ability.
@@ -163,7 +163,7 @@ This enables smooth, real-time two-way communication regardless of hearing abili
 Go to the **Profile** section to update or view your personal info.
 
 - Add interests such as music, movies, hobbies, or favorite topics.
-- SUPANOVA uses this to recommend compatible users, helping you form meaningful friendships.
+- SIGNOVA uses this to recommend compatible users, helping you form meaningful friendships.
 
 ---
 
@@ -205,7 +205,7 @@ Stay tuned for exciting upcoming features:
 
 - 📊 **Progress Tracker** – Track your communication improvements over time.
 - 🤟 **Learning Section** – Practice and learn sign language at your own pace.
-- 🗳️ **Feedback Portal** – Share ideas and suggestions to help shape SUPANOVA’s future.
+- 🗳️ **Feedback Portal** – Share ideas and suggestions to help shape SIGNOVA’s future.
 
 ---
 
