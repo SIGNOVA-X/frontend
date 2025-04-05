@@ -168,35 +168,89 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      title: 'Signova',
+      title: 'SignovaX',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       onGenerateRoute: (settings) {
-        if (settings.name == '/customize-profile') {
-          final args = settings.arguments as Map<String, dynamic>;
-          return MaterialPageRoute(
-            builder:
-                (context) => CustomizeProfileScreen(
-                  redirectToHome: args['redirectToHome'],
-                ),
-          );
+        Widget page;
+        switch (settings.name) {
+          case '/splash':
+            page = SplashScreen();
+            break;
+          case '/':
+            page = LandingScreen();
+            break;
+          case '/login':
+            page = LoginScreen();
+            break;
+          case '/signup':
+            page = SignupScreen();
+            break;
+          case '/home-community':
+            page = HomeCommunityScreen();
+            break;
+          case '/communication':
+            page = CommunicationScreen(_cameras);
+            break;
+          case '/profile':
+            page = ProfileScreen();
+            break;
+          case '/chatbot':
+            page = ChatbotScreen();
+            break;
+          case '/form':
+            page = Formscreen();
+            break;
+          case '/customize-profile':
+            final args = settings.arguments as Map<String, dynamic>?;
+            page = CustomizeProfileScreen(
+              redirectToHome: args?['redirectToHome'] ?? true,
+            );
+            break;
+          default:
+            throw Exception('Unknown route: ${settings.name}');
         }
-        return null;
+
+        return createFancyTransitionRoute(page);
       },
+
       initialRoute: '/splash',
-      routes: {
-        '/splash': (context) => SplashScreen(),
-        '/': (context) => LandingScreen(),
-        '/login': (context) => LoginScreen(),
-        '/signup': (context) => SignupScreen(),
-        '/home-community': (context) => HomeCommunityScreen(),
-        '/communication': (context) => CommunicationScreen(_cameras),
-        '/profile': (context) => ProfileScreen(),
-        '/chatbot': (context) => ChatbotScreen(),
-        '/form': (context) => Formscreen(),
-        '/customize-profile':
-            (context) => CustomizeProfileScreen(redirectToHome: true),
+      // routes: {
+      //   '/splash': (context) => SplashScreen(),
+      //   '/': (context) => LandingScreen(),
+      //   '/login': (context) => LoginScreen(),
+      //   '/signup': (context) => SignupScreen(),
+      //   '/home-community': (context) => HomeCommunityScreen(),
+      //   '/communication': (context) => CommunicationScreen(_cameras),
+      //   '/profile': (context) => ProfileScreen(),
+      //   '/chatbot': (context) => ChatbotScreen(),
+      //   '/form': (context) => Formscreen(),
+      //   '/customize-profile':
+      //       (context) => CustomizeProfileScreen(redirectToHome: true),
+      // },
+    );
+  }
+
+  Route createFancyTransitionRoute(Widget page) {
+    return PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 900),
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final curve = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeInOutBack,
+        );
+        return FadeTransition(
+          opacity: curve,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: Offset(0.2, 0.0),
+              end: Offset.zero,
+            ).animate(curve),
+            child: child,
+          ),
+        );
       },
     );
   }

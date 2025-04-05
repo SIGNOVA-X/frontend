@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,7 +56,13 @@ Widget communitymessages(sizeHeight, sizeWidth) {
     margin: EdgeInsets.all(sizeWidth / 45),
     padding: EdgeInsets.all(sizeHeight / 45),
     decoration: BoxDecoration(
-      color: Colors.white,
+      // color: const Color.fromARGB(255, 171, 151, 193),
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color.fromARGB(255, 154, 128, 182), Colors.white],
+      ),
+      borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
           color: Color.fromRGBO(0, 0, 0, 0.2),
@@ -258,7 +265,10 @@ Widget profileScroll(
   log(profiles.toString());
   if (profiles.isEmpty) {
     return Center(
-      child: Text("No profiles available"), // Handle empty state
+      child: Text(
+        "No profiles available",
+        style: GoogleFonts.inter(color: Colors.white),
+      ), // Handle empty state
     );
   }
   return Container(
@@ -421,4 +431,178 @@ Widget logoutbutton(double sizeHeight, double sizeWidth) {
       ),
     ),
   );
+}
+
+class GlassArticleCard extends StatelessWidget {
+  const GlassArticleCard({
+    super.key,
+    required this.sizeHeight,
+    required this.sizeWidth,
+  });
+
+  final double sizeHeight;
+  final double sizeWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(40),
+      child: Stack(
+        children: [
+          // Background radial glow (white + orange)
+          Container(
+            height: sizeHeight / 4.5,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Color.fromRGBO(225, 225, 225, 0.3),
+                  Color.fromRGBO(221, 113, 4, 0.4), // Orange
+                  Colors.white,
+                ],
+                radius: 1.5,
+                center: Alignment.bottomRight,
+                stops: [0.1, 0.6, 1.0],
+              ),
+            ),
+          ),
+
+          // Base blur layer
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 40, sigmaY: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.05),
+                    Colors.white.withOpacity(0.01),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.15),
+                  width: 1.2,
+                ),
+                borderRadius: BorderRadius.circular(40),
+              ),
+            ),
+          ),
+
+          // Additional dynamic blur effect (optional)
+          Positioned(
+            top: 20,
+            left: 40,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 70, sigmaY: 38),
+              child: Container(
+                width: 100,
+                height: 80,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+
+          // 🔥 Your content goes here:
+          Padding(
+            padding: EdgeInsets.all(sizeWidth / 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Row: Profile image + name + time
+                Row(
+                  children: [
+                    communityprofileimage(
+                      sizeHeight,
+                      sizeWidth,
+                      'assets/images/profile.png',
+                    ),
+                    SizedBox(width: sizeWidth / 35),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "@marcelo20",
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          "20 minutes ago",
+                          style: GoogleFonts.inter(
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: sizeHeight / 50),
+
+                // Message Text
+                Text(
+                  "Nothing better than riding a bike with friends 😇 🥰",
+                  style: GoogleFonts.inter(color: Colors.black),
+                ),
+                SizedBox(height: sizeHeight / 50),
+
+                // Bottom Row: Likes, comments, share, bookmark
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Clarity.heart_line, color: Colors.black),
+                        SizedBox(width: sizeWidth / 45),
+                        Text("256", style: TextStyle(color: Colors.black)),
+                        SizedBox(width: sizeWidth / 25),
+                        Icon(Icons.comment_outlined, color: Colors.black),
+                        SizedBox(width: sizeWidth / 45),
+                        Text("5", style: TextStyle(color: Colors.black)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.share, color: Colors.black),
+                        SizedBox(width: sizeWidth / 30),
+                        Icon(Bootstrap.bookmark, color: Colors.black),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BottomRoundedClipper extends CustomClipper<Path> {
+  final double borderRadius;
+
+  BottomRoundedClipper({this.borderRadius = 40.0});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(0, 0);
+    path.lineTo(0, size.height - borderRadius);
+    path.quadraticBezierTo(0, size.height, borderRadius, size.height);
+    path.lineTo(size.width - borderRadius, size.height);
+    path.quadraticBezierTo(
+      size.width,
+      size.height,
+      size.width,
+      size.height - borderRadius,
+    );
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

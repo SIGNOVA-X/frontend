@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:signova/components/buttons.dart';
 import 'package:signova/components/crud.dart';
 import 'package:signova/components/input.dart';
-import 'package:signova/components/header.dart';
 import 'package:signova/components/snackbar.dart';
 import 'package:signova/model/drag_handler.dart'; // Import DragHandler
 
@@ -82,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen>
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           // Background image
@@ -119,9 +119,18 @@ class _LoginScreenState extends State<LoginScreen>
                         16.0,
                         64.0,
                         16.0,
-                        16.0,
+                        0,
                       ), // Increased top padding
-                      child: buildLoginForm(screenHeight, screenWidth),
+                      child: SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: _blurHeight - 64,
+                          ),
+                          child: IntrinsicHeight(
+                            child: buildLoginForm(screenHeight, screenWidth),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),

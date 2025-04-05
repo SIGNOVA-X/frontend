@@ -54,7 +54,7 @@ class _CustomizeProfileScreenState extends State<CustomizeProfileScreen> {
         return;
       }
       log("Saving avatar for $userid");
-      String? avatar = await updateUsersWithUser(userid!);
+      await updateUsersWithUser(userid!);
       log("Avatar saved!");
       toastification.show(
         context: context,

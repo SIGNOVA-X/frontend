@@ -13,26 +13,38 @@ class SignupScreen extends StatefulWidget {
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderStateMixin {
+class _SignupScreenState extends State<SignupScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController createPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController createPasswordController =
+      TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   late DragHandler dragHandler;
-  double _blurHeight = 0.8 * WidgetsBinding.instance.window.physicalSize.height / WidgetsBinding.instance.window.devicePixelRatio;
+  double _blurHeight =
+      0.8 *
+      WidgetsBinding.instance.window.physicalSize.height /
+      WidgetsBinding.instance.window.devicePixelRatio;
   late AnimationController _animationController;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    dragHandler = DragHandler(initialHeightFactor: 0.8, maxHeightFactor: 1.0); // Initialize DragHandler
+    dragHandler = DragHandler(
+      initialHeightFactor: 0.8,
+      maxHeightFactor: 1.0,
+    ); // Initialize DragHandler
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _animation = Tween<double>(begin: _blurHeight, end: _blurHeight).animate(_animationController);
+    _animation = Tween<double>(
+      begin: _blurHeight,
+      end: _blurHeight,
+    ).animate(_animationController);
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -51,10 +63,10 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
       context: context,
       currentHeight: _blurHeight,
     )..addListener(() {
-        setState(() {
-          _blurHeight = _animation.value;
-        });
+      setState(() {
+        _blurHeight = _animation.value;
       });
+    });
     _animationController.forward(from: 0.0);
   }
 
@@ -74,6 +86,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           // Background image
@@ -90,6 +103,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
             child: Stack(
               children: [
                 GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
                   onVerticalDragUpdate: _onVerticalDragUpdate,
                   onVerticalDragEnd: _onVerticalDragEnd,
                   child: AnimatedContainer(
@@ -104,7 +118,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                       child: Container(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/images/blur_background.png'),
+                            image: AssetImage(
+                              'assets/images/blur_background.png',
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -114,8 +130,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                 ),
                 // Content remains outside the GestureDetector
                 Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -135,7 +151,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             color: const Color(0xFF000000),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: screenHeight * 0.02),
                         Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -146,13 +162,15 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                 controller: fullNameController,
                                 borderColor: const Color(0xFFDEA2FF),
                                 placeholderColor: const Color(0xFFFFFFFF),
-                                focusedPlaceholderColor:
-                                    const Color(0xFF474747).withOpacity(0.5),
+                                focusedPlaceholderColor: const Color(
+                                  0xFF474747,
+                                ).withOpacity(0.5),
                                 textColor: const Color(0xFF000000),
                                 fontWeight: FontWeight.w700,
                                 focusedbackgroundColor: Colors.transparent,
-                                unfocusedbackgroundColor:
-                                    const Color(0xFFD9D9D9),
+                                unfocusedbackgroundColor: const Color(
+                                  0xFFD9D9D9,
+                                ),
                               ),
                               SizedBox(height: screenHeight * 0.02),
                               buildInputField(
@@ -160,13 +178,15 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                 controller: emailController,
                                 borderColor: const Color(0xFFDEA2FF),
                                 placeholderColor: const Color(0xFFFFFFFF),
-                                focusedPlaceholderColor:
-                                    const Color(0xFF474747).withOpacity(0.5),
+                                focusedPlaceholderColor: const Color(
+                                  0xFF474747,
+                                ).withOpacity(0.5),
                                 textColor: const Color(0xFF000000),
                                 fontWeight: FontWeight.w700,
                                 focusedbackgroundColor: Colors.transparent,
-                                unfocusedbackgroundColor:
-                                    const Color(0xFFD9D9D9),
+                                unfocusedbackgroundColor: const Color(
+                                  0xFFD9D9D9,
+                                ),
                               ),
                               SizedBox(height: screenHeight * 0.02),
                               buildInputField(
@@ -175,13 +195,15 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                 controller: createPasswordController,
                                 borderColor: const Color(0xFFDEA2FF),
                                 placeholderColor: const Color(0xFFFFFFFF),
-                                focusedPlaceholderColor:
-                                    const Color(0xFF474747).withOpacity(0.5),
+                                focusedPlaceholderColor: const Color(
+                                  0xFF474747,
+                                ).withOpacity(0.5),
                                 textColor: const Color(0xFF000000),
                                 fontWeight: FontWeight.w700,
                                 focusedbackgroundColor: Colors.transparent,
-                                unfocusedbackgroundColor:
-                                    const Color(0xFFD9D9D9),
+                                unfocusedbackgroundColor: const Color(
+                                  0xFFD9D9D9,
+                                ),
                               ),
                               SizedBox(height: screenHeight * 0.02),
                               buildInputField(
@@ -190,13 +212,15 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                 controller: confirmPasswordController,
                                 borderColor: const Color(0xFFDEA2FF),
                                 placeholderColor: const Color(0xFFFFFFFF),
-                                focusedPlaceholderColor:
-                                    const Color(0xFF474747).withOpacity(0.5),
+                                focusedPlaceholderColor: const Color(
+                                  0xFF474747,
+                                ).withOpacity(0.5),
                                 textColor: const Color(0xFF000000),
                                 fontWeight: FontWeight.w700,
                                 focusedbackgroundColor: Colors.transparent,
-                                unfocusedbackgroundColor:
-                                    const Color(0xFFD9D9D9),
+                                unfocusedbackgroundColor: const Color(
+                                  0xFFD9D9D9,
+                                ),
                               ),
                               SizedBox(height: screenHeight * 0.02),
                               // Sign Up button
@@ -218,8 +242,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   }
 
                                   // Email validation
-                                  if (!RegExp(r'^[^@]+@[^@]+\.(com|in)$')
-                                      .hasMatch(emailController.text)) {
+                                  if (!RegExp(
+                                    r'^[^@]+@[^@]+\.(com|in)$',
+                                  ).hasMatch(emailController.text)) {
                                     showCustomSnackBar(
                                       context,
                                       'Please enter a valid email address',
@@ -237,7 +262,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   }
 
                                   if (await checkUserExists(
-                                      emailController.text)) {
+                                    emailController.text,
+                                  )) {
                                     showCustomSnackBar(
                                       context,
                                       'User already exists',
@@ -251,7 +277,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                     createPasswordController.text,
                                   );
                                   writeStorage(
-                                      'username', emailController.text);
+                                    'username',
+                                    emailController.text,
+                                  );
                                   Navigator.pushNamed(context, '/form');
                                 },
                                 color: const Color(0xFFAA69E3),
@@ -268,16 +296,17 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                   color: Color(0xB3FFFFFF),
                                 ),
                               ),
-                              SizedBox(height: screenHeight * 0.02),
+                              SizedBox(height: screenHeight * 0.01),
                               // Social buttons
                               buildSocialButtons(
                                 context,
                                 screenWidth,
-                                buttonColor: const Color(0xFF474747)
-                                    .withOpacity(0.5),
+                                buttonColor: const Color(
+                                  0xFF474747,
+                                ).withOpacity(0.5),
                                 iconColor: const Color(0xFFFFFFFF),
                               ),
-                              SizedBox(height: screenHeight * 0.02),
+                              SizedBox(height: screenHeight * 0.01),
                               const Text(
                                 'By signing up, you agree to our [Terms of Service] and [Privacy Policy].',
                                 textAlign: TextAlign.center,

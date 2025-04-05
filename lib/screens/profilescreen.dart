@@ -281,30 +281,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-class BottomRoundedClipper extends CustomClipper<Path> {
-  final double borderRadius;
-
-  BottomRoundedClipper({this.borderRadius = 40.0});
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(0, size.height - borderRadius);
-    path.quadraticBezierTo(0, size.height, borderRadius, size.height);
-    path.lineTo(size.width - borderRadius, size.height);
-    path.quadraticBezierTo(
-      size.width,
-      size.height,
-      size.width,
-      size.height - borderRadius,
-    );
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

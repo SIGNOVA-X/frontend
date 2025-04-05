@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -59,6 +60,8 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
         'interests': userDataFirebase?['interests'] ?? 'football',
         'other_interests': userDataFirebase?['other_interests'] ?? 'swimming',
       };
+      log("hellooo");
+      log(body.toString());
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
@@ -70,12 +73,14 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
       List<String> recommendedUsers = List<String>.from(
         responseData['recommended_users'],
       );
-
+      log("hereeee");
+      log(recommendedUsers.toString());
       // Call the function from crud.dart to fetch profiles
       List<Profile> fetchedProfiles = await getProfilesByNames(
         recommendedUsers,
       );
-
+      log("hiiiii");
+      log(fetchedProfiles.toString());
       setState(() {
         profiles = fetchedProfiles;
       });
@@ -114,92 +119,132 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
     double sizeHeight = MediaQuery.of(context).size.height;
     double sizeWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Row(
+      body: Container(
+        padding: EdgeInsets.only(top: sizeHeight / 20),
+        decoration: BoxDecoration(
+          // color: Color.fromRGBO(77, 42, 87, 1),
+          gradient: LinearGradient(
+            colors: [Color.fromRGBO(146, 61, 169, 1.0), Colors.black],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Stack(
           children: [
-            Text(
-              "Welcome",
-              style: GoogleFonts.inter(
-                color: Colors.black,
-                fontSize: sizeWidth / 23,
-                letterSpacing: 0.4,
-                fontWeight: FontWeight.w800,
+            Positioned(
+              child: ClipPath(
+                clipper: BottomRoundedClipper(),
+                child: Container(
+                  height: sizeHeight / 12,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/profile_bg.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
             ),
-            SizedBox(width: sizeWidth / 90),
-            Text(
-              '$username!',
-              style: GoogleFonts.inter(
-                color: Color.fromRGBO(140, 58, 207, 1),
-                fontSize: sizeWidth / 23,
-                letterSpacing: 0.4,
-                fontWeight: FontWeight.w800,
-              ),
+            Column(
+              children: [
+                SizedBox(height: sizeHeight / 50),
+                Row(
+                  children: [
+                    SizedBox(width: sizeWidth / 35),
+                    Text(
+                      "Welcome",
+                      style: GoogleFonts.lifeSavers(
+                        color: Colors.black,
+                        fontSize: sizeWidth / 13,
+                        letterSpacing: 0.4,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    SizedBox(width: sizeWidth / 35),
+                    Text(
+                      '$username!',
+                      style: GoogleFonts.lifeSavers(
+                        color: Colors.white,
+                        fontSize: sizeWidth / 13,
+                        letterSpacing: 0.4,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+                Center(
+                  child: Container(
+                    height: sizeHeight / 1.34,
+                    width: sizeWidth,
+                    margin: EdgeInsets.symmetric(
+                      vertical: sizeWidth / 45,
+                      horizontal: sizeWidth / 35,
+                    ),
+                    child: ScrollConfiguration(
+                      behavior: NoGlowScrollBehavior(),
+                      child: ListView(
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          right: sizeWidth / 30,
+                          left: sizeWidth / 30,
+                          top: sizeHeight / 120,
+                          bottom: sizeHeight / 90,
+                        ),
+                        children: [
+                          SizedBox(height: sizeHeight / 55),
+                          Container(
+                            margin: EdgeInsets.only(left: sizeWidth / 40),
+                            child: Text(
+                              "Suggestions",
+                              style: GoogleFonts.inter(
+                                color: Color.fromRGBO(225, 225, 225, 0.9),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: sizeHeight / 55),
+                          profileScroll(sizeWidth, sizeHeight, profiles),
+                          SizedBox(height: sizeHeight / 55),
+                          communitymessages(sizeHeight, sizeWidth),
+                          // GlassArticleCard(
+                          //   sizeHeight: MediaQuery.of(context).size.height,
+                          //   sizeWidth: MediaQuery.of(context).size.width,
+                          // ),
+                          SizedBox(height: sizeHeight / 55),
+                          communitymessages(sizeHeight, sizeWidth),
+                          // GlassArticleCard(
+                          //   sizeHeight: MediaQuery.of(context).size.height,
+                          //   sizeWidth: MediaQuery.of(context).size.width,
+                          // ),
+                          SizedBox(height: sizeHeight / 55),
+                          communitymessages(sizeHeight, sizeWidth),
+                          // GlassArticleCard(
+                          //   sizeHeight: MediaQuery.of(context).size.height,
+                          //   sizeWidth: MediaQuery.of(context).size.width,
+                          // ),
+                          SizedBox(height: sizeHeight / 55),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Center(
-            child: ToggleButtons(
-              constraints: BoxConstraints(minWidth: sizeWidth * 0.4),
-              color: Colors.black,
-              selectedColor: Colors.white,
-              fillColor: Color.fromRGBO(140, 58, 207, 1),
-              // borderColor: Colors.black,
-              // selectedBorderColor: Color.fromRGBO(88, 41, 122, 1.0),
-              borderWidth: 3,
-              borderRadius: BorderRadius.circular(20.0),
-              onPressed: (int index) {
-                setState(() {
-                  isSelected[index] = true;
-                  isSelected[(index - 1).abs()] = false;
-                });
-              },
-              isSelected: isSelected,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-                  child: Text("Recommended", style: GoogleFonts.inter()),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(sizeWidth * sizeHeight * 0.00002),
-                  child: Text("New", style: GoogleFonts.inter()),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: sizeHeight / 1.4,
-            width: sizeWidth,
-            // padding: EdgeInsets.only(left: sizeWidth / 12, top: sizeHeight / 8),
-            margin: EdgeInsets.all(sizeWidth / 85),
-            child: ListView(
-              padding: EdgeInsets.only(
-                right: sizeWidth / 30,
-                left: sizeWidth / 30,
-                top: sizeHeight / 40,
-                bottom: sizeHeight / 40,
-              ),
-              children: [
-                profileScroll(sizeWidth, sizeHeight, profiles),
-                SizedBox(height: sizeHeight / 55),
-                communitymessages(sizeHeight, sizeWidth),
-                SizedBox(height: sizeHeight / 55),
-                communitymessages(sizeHeight, sizeWidth),
-                SizedBox(height: sizeHeight / 55),
-                communitymessages(sizeHeight, sizeWidth),
-                SizedBox(height: sizeHeight / 55),
-                communitymessages(sizeHeight, sizeWidth),
-              ],
-            ),
-          ),
-        ],
-      ),
       bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );
+  }
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  Widget buildViewportChrome(
+    BuildContext context,
+    Widget child,
+    AxisDirection axisDirection,
+  ) {
+    return child;
   }
 }
