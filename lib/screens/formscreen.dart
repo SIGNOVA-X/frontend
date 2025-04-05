@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:signova/components/crud.dart';
 import 'package:signova/components/header.dart';
 import 'package:signova/components/input.dart';
 import 'package:signova/components/snackbar.dart';
+import 'package:signova/model/drag_handler.dart'; // Import DragHandler
+
 
 class Formscreen extends StatefulWidget {
   const Formscreen({super.key});
@@ -11,29 +14,66 @@ class Formscreen extends StatefulWidget {
   State<Formscreen> createState() => _FormscreenState();
 }
 
-class _FormscreenState extends State<Formscreen> {
+class _FormscreenState extends State<Formscreen> with SingleTickerProviderStateMixin {
   // Define TextEditingControllers for each input field
-  final TextEditingController genderController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
   final TextEditingController professionController = TextEditingController();
-  final TextEditingController hobbiesController = TextEditingController();
-  final TextEditingController travelController = TextEditingController();
-  final TextEditingController petController = TextEditingController();
-  final TextEditingController favoritePersonController =
-      TextEditingController();
+  final TextEditingController interestController = TextEditingController();
+  final TextEditingController otherinterestsController = TextEditingController();
+  final TextEditingController languageController = TextEditingController();
 
+late DragHandler dragHandler;
+  double _blurHeight = 0.8 * WidgetsBinding.instance.window.physicalSize.height / WidgetsBinding.instance.window.devicePixelRatio;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    dragHandler = DragHandler(initialHeightFactor: 0.8, maxHeightFactor: 1.0); // Initialize DragHandler
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _animation = Tween<double>(begin: _blurHeight, end: _blurHeight).animate(_animationController);
+  }
+
+  void _onVerticalDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _blurHeight = dragHandler.handleDragUpdate(
+        details: details,
+        context: context,
+        currentHeight: _blurHeight,
+      );
+    });
+  }
+
+  void _onVerticalDragEnd(DragEndDetails details) {
+    _animation = dragHandler.handleDragEnd(
+      animationController: _animationController,
+      context: context,
+      currentHeight: _blurHeight,
+    )..addListener(() {
+        setState(() {
+          _blurHeight = _animation.value;
+        });
+      });
+    _animationController.forward(from: 0.0);
+  }
+
+ 
   @override
   void dispose() {
     // Dispose controllers to free up resources
     genderController.dispose();
     ageController.dispose();
-    phoneController.dispose();
+    bioController.dispose();
     professionController.dispose();
-    hobbiesController.dispose();
-    travelController.dispose();
-    petController.dispose();
-    favoritePersonController.dispose();
+    otherinterestsController.dispose();
+    languageController.dispose();
+    interestController.dispose();
     super.dispose();
   }
 
@@ -43,35 +83,42 @@ class _FormscreenState extends State<Formscreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          buildHeader(screenHeight, screenWidth),
-          Align(
-            alignment: Alignment.center,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: screenHeight * 0.8, // Limit to 80% of screen height
+          // Background image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/signup_background.png'),
+                fit: BoxFit.cover,
               ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    // Reduced to 5% of screen height
-                    left: screenWidth * 0.05, // 5% of screen width
-                    right: screenWidth * 0.05, // 5% of screen width
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              onVerticalDragUpdate: _onVerticalDragUpdate,
+              onVerticalDragEnd: _onVerticalDragEnd,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _blurHeight,
+                curve: Curves.easeOut,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(50.0),
+                    topRight: Radius.circular(50.0),
                   ),
-                  child: buildForm(
-                    screenHeight,
-                    screenWidth,
-                    context,
-                    genderController,
-                    ageController,
-                    phoneController,
-                    professionController,
-                    hobbiesController,
-                    travelController,
-                    petController,
-                    favoritePersonController,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/blur_background.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0), // Increased top padding
+                      child: buildForm(screenHeight, screenWidth, context, genderController, ageController, bioController, professionController, otherinterestsController, languageController, interestController),
+                    ),
                   ),
                 ),
               ),
@@ -89,14 +136,14 @@ Widget buildForm(
   context,
   TextEditingController genderController,
   TextEditingController ageController,
-  TextEditingController phoneController,
+  TextEditingController bioController,
   TextEditingController professionController,
-  TextEditingController hobbiesController,
-  TextEditingController travelController,
-  TextEditingController petController,
-  TextEditingController favoritePersonController,
+  TextEditingController otherinterestsController,
+  TextEditingController languageController,
+  TextEditingController interestController,
+
 ) {
-  final double questionFontSize = screenWidth * 0.05; // 5% of screen width
+  final double questionFontSize = screenWidth * 0.08; // 5% of screen width
   final double spacing = screenHeight * 0.02; // 2% of screen height
 
   return Column(
@@ -107,95 +154,120 @@ Widget buildForm(
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'FO',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w800, // Extra Bold
-                  fontSize: screenWidth * 0.1, // 10% of screen width
-                  color: Color(0xFF000000), // Black color for the first letter
+                text: 'Tell us about yourself!',
+                style: GoogleFonts.lifeSavers(
+                  fontSize: questionFontSize,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF000000),
                 ),
               ),
-              TextSpan(
-                text: 'RM',
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w800, // Extra Bold
-                  fontSize: screenWidth * 0.1, // 10% of screen width
-                  color: Color(0xFFAA69E3), // Purple color for the rest
-                ),
-              ),
+              
             ],
           ),
         ),
       ),
       SizedBox(height: spacing),
-      buildQuestionWithInput(
-        question: '1. What’s your gender identity?',
-        placeholder: 'Ex - Male/Female/Other',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: genderController,
-      ),
-      buildQuestionWithInput(
-        question: '2. How young are you?',
-        placeholder: 'Ex - 25',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: ageController,
-      ),
-      buildQuestionWithInput(
-        question: '3. What’s your phone number?',
-        placeholder: 'Ex - +1234567890',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: phoneController,
-      ),
-      buildQuestionWithInput(
-        question: '4. What’s your profession?',
-        placeholder: 'Ex - Engineer',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: professionController,
-      ),
-      buildQuestionWithInput(
-        question: '5. What are your hobbies?',
-        placeholder: 'Ex - Reading, Traveling',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: hobbiesController,
-      ),
-      buildQuestionWithInput(
-        question: '6. Where do you dream of traveling?',
-        placeholder: 'Ex - Paris',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: travelController,
-      ),
-      buildQuestionWithInput(
-        question: '7. What’s your favorite pet?',
-        placeholder: 'Ex - Dog',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: petController,
-      ),
-      buildQuestionWithInput(
-        question: '8. What’s the number of your favourite person?',
-        placeholder: 'Ex - +1234567890 (BFF’s number)',
-        questionFontSize: questionFontSize,
-        spacing: spacing,
-        controller: favoritePersonController,
-      ),
+      buildInputField(
+                'Bio',
+                isPassword: false,
+                controller: bioController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+       buildInputField(
+                'Age',
+                isPassword: false,
+                controller: ageController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+               buildInputField(
+                'Gender',
+                isPassword: false,
+                controller: genderController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+               buildInputField(
+                'Profession',
+                isPassword: false,
+                controller: professionController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+               buildInputField(
+                'Interests',
+                isPassword: false,
+                controller: interestController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+               buildInputField(
+                'Other_interests',
+                isPassword: false,
+                controller: otherinterestsController,
+                borderColor: const Color(0xFFDEA2FF),
+                placeholderColor: const Color(0xFFFFFFFF),
+                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                textColor: const Color(0xFF000000),
+                fontWeight: FontWeight.w700,
+                focusedbackgroundColor: Colors.transparent,
+                unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+                buildInputField(
+                  'Language',
+                  isPassword: false,
+                  controller: languageController,
+                  borderColor: const Color(0xFFDEA2FF),
+                  placeholderColor: const Color(0xFFFFFFFF),
+                  focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                  textColor: const Color(0xFF000000),
+                  fontWeight: FontWeight.w700,
+                  focusedbackgroundColor: Colors.transparent,
+                  unfocusedbackgroundColor: const Color(0xFFD9D9D9),
+                ),
+                SizedBox(height: screenHeight * 0.02),
       Center(
         child: ElevatedButton(
           onPressed: () async {
             if (genderController.text.isEmpty ||
                 ageController.text.isEmpty ||
-                phoneController.text.isEmpty ||
+                languageController.text.isEmpty ||
                 professionController.text.isEmpty ||
-                hobbiesController.text.isEmpty ||
-                travelController.text.isEmpty ||
-                petController.text.isEmpty ||
-                favoritePersonController.text.isEmpty) {
+                interestController.text.isEmpty ||
+                otherinterestsController.text.isEmpty ||
+                genderController.text.isEmpty ) {
               showCustomSnackBar(context, 'Please fill all the fields');
               return;
             }
@@ -203,12 +275,11 @@ Widget buildForm(
             final formData = {
               'gender': genderController.text,
               'age': ageController.text,
-              'phone': phoneController.text,
+              'language': languageController.text,
               'profession': professionController.text,
-              'hobbies': hobbiesController.text,
-              'travel': travelController.text,
-              'pet': petController.text,
-              'favoritePerson': favoritePersonController.text,
+              'interest': interestController.text,
+              'other_interests': otherinterestsController.text,
+              'bio': bioController.text,
             };
 
             await storeFormData(
@@ -222,7 +293,7 @@ Widget buildForm(
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFAA69E3),
+            backgroundColor: const Color(0xFF000000),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
