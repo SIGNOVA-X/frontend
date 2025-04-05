@@ -15,24 +15,34 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   late DragHandler dragHandler;
-  double _blurHeight = 0.65 * WidgetsBinding.instance.window.physicalSize.height / WidgetsBinding.instance.window.devicePixelRatio;
+  double _blurHeight =
+      0.65 *
+      WidgetsBinding.instance.window.physicalSize.height /
+      WidgetsBinding.instance.window.devicePixelRatio;
   late AnimationController _animationController;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    dragHandler = DragHandler(initialHeightFactor: 0.65, maxHeightFactor: 1.0); // Initialize DragHandler
+    dragHandler = DragHandler(
+      initialHeightFactor: 0.65,
+      maxHeightFactor: 1.0,
+    ); // Initialize DragHandler
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _animation = Tween<double>(begin: _blurHeight, end: _blurHeight).animate(_animationController);
+    _animation = Tween<double>(
+      begin: _blurHeight,
+      end: _blurHeight,
+    ).animate(_animationController);
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -51,10 +61,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       context: context,
       currentHeight: _blurHeight,
     )..addListener(() {
-        setState(() {
-          _blurHeight = _animation.value;
-        });
+      setState(() {
+        _blurHeight = _animation.value;
       });
+    });
     _animationController.forward(from: 0.0);
   }
 
@@ -105,7 +115,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0), // Increased top padding
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        64.0,
+                        16.0,
+                        16.0,
+                      ), // Increased top padding
                       child: buildLoginForm(screenHeight, screenWidth),
                     ),
                   ),
@@ -150,7 +165,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 controller: emailController,
                 borderColor: const Color(0xFFDEA2FF),
                 placeholderColor: const Color(0xFFFFFFFF),
-                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                focusedPlaceholderColor: const Color(
+                  0xFF474747,
+                ).withOpacity(0.5),
                 textColor: const Color(0xFF000000),
                 fontWeight: FontWeight.w700,
                 focusedbackgroundColor: Colors.transparent,
@@ -163,7 +180,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 controller: passwordController,
                 borderColor: const Color(0xFFDEA2FF),
                 placeholderColor: const Color(0xFFFFFFFF),
-                focusedPlaceholderColor: const Color(0xFF474747).withOpacity(0.5),
+                focusedPlaceholderColor: const Color(
+                  0xFF474747,
+                ).withOpacity(0.5),
                 textColor: const Color(0xFF000000),
                 fontWeight: FontWeight.w700,
                 focusedbackgroundColor: Colors.transparent,
@@ -204,6 +223,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     log("No form data found.");
                   }
                   writeStorage('emergency_contact', favoritePerson!);
+                  var checkec = readStorage('emergency_contact');
+                  log("emergency: $checkec");
                   if (storedUser.isNotEmpty) {
                     Navigator.pushNamed(context, '/home-community');
                   } else {
@@ -240,12 +261,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               ),
               SizedBox(height: screenHeight * 0.01),
               buildSocialButtons(
-                                  context,
-                                  screenWidth,
-                                  buttonColor: const Color(0xFF474747)
-                                      .withOpacity(0.5),
-                                  iconColor: const Color(0xFFFFFFFF),
-                                ),
+                context,
+                screenWidth,
+                buttonColor: const Color(0xFF474747).withOpacity(0.5),
+                iconColor: const Color(0xFFFFFFFF),
+              ),
               SizedBox(height: screenHeight * 0.02),
             ],
           ),
