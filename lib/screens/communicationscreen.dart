@@ -63,7 +63,6 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     _setUpCamera(_selectedCameraIndex);
     _fetchGifUrlFromApi();
     initializeTts();
-    _startListening();
   }
 
   Future<void> _fetchGifUrlFromApi() async {
