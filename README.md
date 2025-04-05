@@ -1,4 +1,4 @@
-# 🚀 SIGNOVA – Bridging the Communication Gap for the Deaf and Mute Community
+# 🚀 SIGNOVA-X – Bridging the Communication Gap for the Deaf and Mute Community
 
 It is an inclusive AI-powered application built to bridge the communication gap between the deaf/mute community and the hearing population. It enables real-time interaction by converting sign language into text and vice versa using deep learning, computer vision, and gesture recognition. Beyond communication, the app also offers AI-based friend suggestions based on user profiles, a motivational chatbot powered by Google Gemini for emotional support, and an SOS emergency feature. SIGNOVA-X is designed to empower, connect, and support individuals who rely on sign language—making digital communication more accessible, human, and inclusive.
 
@@ -19,7 +19,7 @@ Traditional methods like text messaging or human interpreters are not always acc
 
 There is a pressing need for an intelligent, accessible, and real-time solution that empowers deaf and mute individuals to communicate effortlessly, connect meaningfully, and feel supported—just like anyone else.
 
-**SIGNOVA** addresses this gap by leveraging AI, computer vision, and natural language processing to build a bridge between sign language and spoken language, enabling seamless two-way communication and emotional support in an inclusive digital environment.
+**SIGNOVA-X** addresses this gap by leveraging AI, computer vision, and natural language processing to build a bridge between sign language and spoken language, enabling seamless two-way communication and emotional support in an inclusive digital environment.
 
 
 ---
@@ -28,7 +28,7 @@ There is a pressing need for an intelligent, accessible, and real-time solution 
 
 
 ### 🔁 Real-Time Sign Language Translation
-Enable seamless two-way communication between deaf/mute users and others. **SIGNOVA** captures live sign language video, extracts frames, and uses advanced AI models to convert it into accurate English text, fostering natural interactions.
+Enable seamless two-way communication between deaf/mute users and others. **SIGNOVA-X** captures live sign language video, extracts frames, and uses advanced AI models to convert it into accurate English text, fostering natural interactions.
 
 ### 🧑‍🤝‍🧑 Split-Screen Communication Interface
 A dual-interface screen designed for real-time interactions. One side lets deaf users express through sign language, while the other allows hearing users to respond via voice, which is converted into sign actions by an animated avatar—ensuring fluid conversation.
@@ -39,7 +39,7 @@ Using speech-to-text and NLP models, spoken input from hearing users is translat
 
 
 ### 🧬 AI-Powered Friend Suggestion System
-SIGNOVA enhances social connectivity using an AI-driven profile-matching algorithm. During sign-up, users input hobbies, interests, and preferences, which are analyzed to recommend compatible friends and expand their social circles.
+SIGNOVA-X enhances social connectivity using an AI-driven profile-matching algorithm. During sign-up, users input hobbies, interests, and preferences, which are analyzed to recommend compatible friends and expand their social circles.
 
 ### 🧑‍⚕️ Mental Health Support Chatbot
 Address emotional struggles and isolation with a 24/7 motivational chatbot tailored for the deaf community. It offers empathetic support to promote mental resilience and reduce feelings of loneliness.
@@ -58,14 +58,14 @@ A clean, intuitive interface built with accessibility in mind. Designed to accom
 
 
 ### 🔐 Privacy-First Design
-All user interactions—including sign, voice, and location data—are securely processed using end-to-end encryption. SIGNOVA follows strict privacy standards to keep your communication confidential.
+All user interactions—including sign, voice, and location data—are securely processed using end-to-end encryption. SIGNOVA-X follows strict privacy standards to keep your communication confidential.
 
 
 ---
 
-##  Future Scope of SIGNOVA
+##  Future Scope of SIGNOVA-X
 
-At **SIGNOVA**, we’re committed to pushing the boundaries of accessibility, inclusion, and meaningful human connection. Below are the upcoming features and innovations we plan to integrate to further empower the deaf and mute community:
+At **SIGNOVA-X**, we’re committed to pushing the boundaries of accessibility, inclusion, and meaningful human connection. Below are the upcoming features and innovations we plan to integrate to further empower the deaf and mute community:
 
 ### Google Meet Integration for Inclusive Meetings
 Imagine a virtual space where deaf individuals can actively participate in online meetings.
@@ -79,7 +79,7 @@ Imagine a virtual space where deaf individuals can actively participate in onlin
 ### Name Recognition & Smart Vibration Alerts
 Deaf individuals often miss cues like someone calling their name.
 
-- Future versions of SIGNOVA will:
+- Future versions of SIGNOVA-X will:
   - Use ambient sound detection to recognize when the user’s name is spoken nearby.
   - Trigger a gentle **vibration alert** on their phone.
 - This feature helps users stay alert and engaged in their environment.
@@ -88,7 +88,7 @@ Deaf individuals often miss cues like someone calling their name.
 ###  Therapist Support & Emotional Wellness
 Many users silently struggle with loneliness, anxiety, or depression due to communication barriers.
 
-- SIGNOVA aims to offer:
+- SIGNOVA-X aims to offer:
   - In-app access to **licensed therapists** trained in supporting people with disabilities.
   - Mental health resources and empathy-driven care within a safe space.
 
@@ -115,7 +115,7 @@ Track and visualize your personal communication journey.
 ### Multi-Language Support & Regional Sign Variants
 Sign languages are not universal. To support global diversity:
 
-- SIGNOVA will support:
+- SIGNOVA-X will support:
   - Regional sign languages like **ISL, ASL, BSL**, and more.
   - Real-time translation of spoken languages into their **local sign language variants**.
 
@@ -123,7 +123,7 @@ Sign languages are not universal. To support global diversity:
 ### Community Volunteering & Listener Program
 We envision a supportive community built on empathy.
 
-- SIGNOVA will introduce:
+- SIGNOVA-X will introduce:
   - A **volunteer listener program** connecting hearing individuals with deaf users.
   - Opportunities to offer support, companionship, or simply be a friend.
 
@@ -132,9 +132,9 @@ This initiative strengthens community bonds through shared conversations and mut
 ---
 
 
-## 📖 How to Use SIGNOVA
+## 📖 How to Use SIGNOVA-X
 
-**SIGNOVA** is designed to help deaf and mute individuals communicate, connect, and feel supported. Here's a simple step-by-step guide to get started and explore each powerful feature:
+**SIGNOVA-X** is designed to help deaf and mute individuals communicate, connect, and feel supported. Here's a simple step-by-step guide to get started and explore each powerful feature:
 
 ---
 
@@ -152,7 +152,7 @@ Head over to the **Live Communication** section.
 
 The screen is divided into two parts:
 
-- 👋 **Left Side (Deaf/Mute User):** Show your sign language gestures to the camera. SIGNOVA captures and converts them into real-time English text using AI.
+- 👋 **Left Side (Deaf/Mute User):** Show your sign language gestures to the camera. SIGNOVA-X captures and converts them into real-time English text using AI.
 - 🗣️ **Right Side (Hearing User):** The other user speaks into the mic. Their voice is transcribed and translated into sign language through an animated avatar.
 
 This enables smooth, real-time two-way communication regardless of hearing ability.
@@ -163,7 +163,7 @@ This enables smooth, real-time two-way communication regardless of hearing abili
 Go to the **Profile** section to update or view your personal info.
 
 - Add interests such as music, movies, hobbies, or favorite topics.
-- SIGNOVA uses this to recommend compatible users, helping you form meaningful friendships.
+- SIGNOVA-X uses this to recommend compatible users, helping you form meaningful friendships.
 
 ---
 
@@ -205,7 +205,7 @@ Stay tuned for exciting upcoming features:
 
 - 📊 **Progress Tracker** – Track your communication improvements over time.
 - 🤟 **Learning Section** – Practice and learn sign language at your own pace.
-- 🗳️ **Feedback Portal** – Share ideas and suggestions to help shape SIGNOVA’s future.
+- 🗳️ **Feedback Portal** – Share ideas and suggestions to help shape SIGNOVA-X’s future.
 
 ---
 
