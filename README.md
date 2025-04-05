@@ -1,4 +1,4 @@
-# 🚀 SUPANOVA – Bridging the Communication Gap for the Deaf and Mute Community
+# 🚀 SIGNOVA – Bridging the Communication Gap for the Deaf and Mute Community
 
 It is an inclusive AI-powered application built to bridge the communication gap between the deaf/mute community and the hearing population. It enables real-time interaction by converting sign language into text and vice versa using deep learning, computer vision, and gesture recognition. Beyond communication, the app also offers AI-based friend suggestions based on user profiles, a motivational chatbot powered by Google Gemini for emotional support, and an SOS emergency feature. SIGNOVA-X is designed to empower, connect, and support individuals who rely on sign language—making digital communication more accessible, human, and inclusive.
 
@@ -19,7 +19,7 @@ Traditional methods like text messaging or human interpreters are not always acc
 
 There is a pressing need for an intelligent, accessible, and real-time solution that empowers deaf and mute individuals to communicate effortlessly, connect meaningfully, and feel supported—just like anyone else.
 
-**SUPANOVA** addresses this gap by leveraging AI, computer vision, and natural language processing to build a bridge between sign language and spoken language, enabling seamless two-way communication and emotional support in an inclusive digital environment.
+**SIGNOVA** addresses this gap by leveraging AI, computer vision, and natural language processing to build a bridge between sign language and spoken language, enabling seamless two-way communication and emotional support in an inclusive digital environment.
 
 
 ---
@@ -28,7 +28,7 @@ There is a pressing need for an intelligent, accessible, and real-time solution 
 
 
 ### 🔁 Real-Time Sign Language Translation
-Enable seamless two-way communication between deaf/mute users and others. **SUPANOVA** captures live sign language video, extracts frames, and uses advanced AI models to convert it into accurate English text, fostering natural interactions.
+Enable seamless two-way communication between deaf/mute users and others. **SIGNOVA** captures live sign language video, extracts frames, and uses advanced AI models to convert it into accurate English text, fostering natural interactions.
 
 ### 🧑‍🤝‍🧑 Split-Screen Communication Interface
 A dual-interface screen designed for real-time interactions. One side lets deaf users express through sign language, while the other allows hearing users to respond via voice, which is converted into sign actions by an animated avatar—ensuring fluid conversation.
