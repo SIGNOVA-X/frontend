@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttermoji/fluttermojiCircleAvatar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:signova/model/profile.dart';
@@ -126,13 +125,13 @@ Widget _buildSocialButton(
   BuildContext context,
   String assetPath, {
   IconData? icon,
+  required Color buttonColor,
+  required Color iconColor,
 }) {
   return ElevatedButton(
     onPressed: () {},
     style: ElevatedButton.styleFrom(
-      backgroundColor: const Color(
-        0xFF474747,
-      ).withOpacity(0.5), // Button color with 50% opacity
+      backgroundColor: buttonColor, // Use buttonColor parameter
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded rectangle
       ),
@@ -141,10 +140,9 @@ Widget _buildSocialButton(
         MediaQuery.of(context).size.height * 0.05,
       ), // Dynamic button size
     ),
-    child:
-        assetPath.isNotEmpty
-            ? Image.asset(assetPath, height: 24, width: 24) // Google image
-            : Icon(icon, color: Colors.white, size: 35), // Facebook icon
+    child: assetPath.isNotEmpty
+        ? Image.asset(assetPath, height: 24, width: 24) // Google image
+        : Icon(icon, color: iconColor, size: 35), // Use iconColor parameter
   );
 }
 
@@ -153,12 +151,15 @@ Widget buildSignupLoginButton(
   double screenWidth,
   double screenHeight,
   String displaytext,
-  VoidCallback onPressed,
-) {
+  VoidCallback onPressed, {
+  required Color color,
+  required Color textColor,
+  required FontWeight fontWeight,
+}) {
   return ElevatedButton(
     onPressed: onPressed,
     style: ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFFAA69E3),
+      backgroundColor: color,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       minimumSize: Size(screenWidth * 0.8, screenHeight * 0.06),
     ),
@@ -166,21 +167,38 @@ Widget buildSignupLoginButton(
       displaytext,
       style: TextStyle(
         fontFamily: 'Inter',
-        fontWeight: FontWeight.w700,
+        fontWeight: fontWeight,
         fontSize: 20,
-        color: Color(0xFFFFFFFF),
+        color: textColor,
       ),
     ),
   );
 }
 
-Widget buildSocialButtons(BuildContext context, double screenWidth) {
+Widget buildSocialButtons(
+  BuildContext context,
+  double screenWidth, {
+  required Color buttonColor,
+  required Color iconColor,
+}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      _buildSocialButton(context, 'assets/images/google.png'),
-      SizedBox(width: screenWidth * 0.02),
-      _buildSocialButton(context, '', icon: Icons.facebook),
+      _buildSocialButton(
+        context,
+ 'assets/images/google.png',
+
+        buttonColor: buttonColor,
+        iconColor: iconColor,
+      ),
+      SizedBox(width: screenWidth * 0.05),
+      _buildSocialButton(
+        context,
+'assets/images/facebook.png',
+
+        buttonColor: buttonColor,
+        iconColor: iconColor,
+      ),
     ],
   );
 }
