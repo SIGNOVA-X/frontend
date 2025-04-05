@@ -140,9 +140,10 @@ Widget _buildSocialButton(
         MediaQuery.of(context).size.height * 0.05,
       ), // Dynamic button size
     ),
-    child: assetPath.isNotEmpty
-        ? Image.asset(assetPath, height: 24, width: 24) // Google image
-        : Icon(icon, color: iconColor, size: 35), // Use iconColor parameter
+    child:
+        assetPath.isNotEmpty
+            ? Image.asset(assetPath, height: 24, width: 24) // Google image
+            : Icon(icon, color: iconColor, size: 35), // Use iconColor parameter
   );
 }
 
@@ -186,7 +187,7 @@ Widget buildSocialButtons(
     children: [
       _buildSocialButton(
         context,
- 'assets/images/google.png',
+        'assets/images/google.png',
 
         buttonColor: buttonColor,
         iconColor: iconColor,
@@ -194,7 +195,7 @@ Widget buildSocialButtons(
       SizedBox(width: screenWidth * 0.05),
       _buildSocialButton(
         context,
-'assets/images/facebook.png',
+        'assets/images/facebook.png',
 
         buttonColor: buttonColor,
         iconColor: iconColor,
@@ -332,4 +333,92 @@ class ToggleButtonComponent extends StatelessWidget {
               .toList(),
     );
   }
+}
+
+Widget profileFields(
+  double sizeHeight,
+  double sizeWidth,
+  String labelString,
+  IconData iconString,
+  String fieldValue,
+) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(
+          top: sizeHeight / 120,
+          right: sizeWidth / 10,
+          left: sizeWidth / 10,
+        ),
+        child: Text(
+          labelString,
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: sizeHeight / 80,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+      Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(
+          vertical: sizeHeight / 120,
+          horizontal: sizeWidth / 10,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: sizeWidth / 22,
+          vertical: sizeHeight / 65,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Color.fromRGBO(171, 171, 171, 1)),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              iconString,
+              color: Color.fromRGBO(171, 171, 171, 1),
+              size: sizeHeight / 40,
+            ),
+            SizedBox(width: sizeWidth / 25),
+            Text(
+              fieldValue,
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: sizeHeight / 66,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget logoutbutton(double sizeHeight, double sizeWidth) {
+  return Container(
+    margin: EdgeInsets.symmetric(
+      vertical: sizeHeight / 60,
+      horizontal: sizeWidth / 10,
+    ),
+    padding: EdgeInsets.symmetric(
+      horizontal: sizeWidth / 20,
+      vertical: sizeHeight / 60,
+    ),
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      border: Border.all(color: Color.fromRGBO(140, 58, 207, 1)),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Text(
+      "LOGOUT",
+      style: GoogleFonts.inter(
+        color: Colors.white,
+        fontWeight: FontWeight.w800,
+        fontSize: sizeHeight / 50,
+      ),
+    ),
+  );
 }

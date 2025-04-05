@@ -17,10 +17,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 4;
-  String? username;
-  String? useremail;
-  String? userphoneno;
+  String? username = "Guest";
+  String? useremail = "guest@gmail.com";
+  String? userphoneno = "+01 234 567 89";
+  String? emergency_contact = "+91 1234567890";
   String? avatarJson;
+  String? userpassword = "**";
 
   @override
   void initState() {
@@ -31,24 +33,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void fetchUser() async {
     log(readStorage('username'));
     String? userId = readStorage('username');
+    var emergency = readStorage('emergency_contact');
+    log(emergency);
     if (userId.isEmpty) {
       log("User ID is null or empty!");
-      setState(() {
-        username = 'Guest';
-        useremail = "guest@gmail.com";
-        userphoneno = "+01 234 567 89";
-      });
-      return; // Stop execution if userId is invalid
+      return;
     }
     log("Fetching user details for ID: $userId");
     Map<String, dynamic>? userData = await getUserDetails(userId);
     Map<String, dynamic>? formData = await getFormData();
     if (userData != null && formData != null) {
-      log("User Data: $userData");
       log("Name: ${userData['name']}");
+      String pass = userData['password'] ?? '**';
+      pass = "*" * pass.length;
+      log("password:$pass");
       setState(() {
         username = userData['name'] ?? 'Guest';
         useremail = userId;
+        userpassword = pass;
+        emergency_contact = emergency;
         userphoneno = formData['phone'] ?? "+01 234 567 89";
         avatarJson = userData['avatar'] ?? "assests/images/profile.png";
       });
@@ -58,6 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         useremail = "guest@gmail.com";
         userphoneno = "+01 234 567 89";
         avatarJson = "assests/images/profile.png";
+        userpassword = "**";
       });
       log("User or form data not found!");
     }
@@ -121,185 +125,138 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: sizeWidth / 2.5,
-                    right: sizeWidth / 3,
-                    left: sizeWidth / 3,
-                    bottom: sizeHeight / 90,
-                  ),
-                  child:
-                      avatarJson != null
-                          ? FluttermojiCircleAvatar(
-                            backgroundColor: Colors.grey[200]!,
-                            radius: sizeWidth / 6,
-                          )
-                          : circleButton(
-                            sizeHeight * 2,
-                            sizeWidth * 2,
-                            'assets/images/profile.png',
-                            false,
-                          ),
-                ),
-                Text(
-                  username ?? "guest",
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: sizeWidth / 16,
+                  padding: EdgeInsets.only(top: sizeHeight / 8),
+                  child: Container(
+                    height: sizeHeight / 10,
+                    width: sizeWidth / 1.5,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Hi I am a professional photographer and love to visit new places.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lifeSavers(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        fontSize: sizeWidth / 25,
+                      ),
+                    ),
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("${useremail} | "), Text("$userphoneno")],
-                ),
-
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 70,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/customize-profile',
-                            arguments: {'redirectToHome': false},
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Icon((MingCute.profile_line)),
-                            SizedBox(width: sizeWidth / 14),
-                            Text("Edit profile information"),
-                          ],
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "1k",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon((Clarity.bell_line)),
-                          Text("Notifications"),
-                          SizedBox(width: sizeWidth / 4),
-                          Text(
-                            "ON",
-                            style: GoogleFonts.inter(
-                              color: Color.fromRGBO(21, 115, 254, 1.0),
+                        Text(
+                          "Followers",
+                          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        avatarJson != null
+                            ? FluttermojiCircleAvatar(
+                              backgroundColor: Colors.grey[200]!,
+                              radius: sizeWidth / 8,
+                            )
+                            : circleButton(
+                              sizeHeight * 2,
+                              sizeWidth * 2,
+                              'assets/images/profile.png',
+                              false,
                             ),
+                        SizedBox(height: sizeHeight / 200),
+                        Text(
+                          username ?? "guest",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: sizeWidth / 20,
                           ),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon((Icons.translate_outlined)),
-                          Text("Language"),
-                          SizedBox(width: sizeWidth / 4),
-                          Text(
-                            "English",
-                            style: GoogleFonts.inter(
-                              color: Color.fromRGBO(21, 115, 254, 1.0),
-                            ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "233",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
+                        Text(
+                          "Following",
+                          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/customize-profile',
+                      arguments: {'redirectToHome': false},
+                    );
+                  },
+                  child: Container(
+                    width: sizeWidth / 4,
+                    height: sizeHeight / 30,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: sizeHeight / 120),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      "Edit Profile",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: sizeWidth / 36,
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 70,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon((Icons.contact_support_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Emergency Contact"),
-                        ],
-                      ),
-                    ],
-                  ),
+                profileFields(
+                  sizeHeight,
+                  sizeWidth,
+                  "Email",
+                  Icons.email_outlined,
+                  useremail!,
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: sizeHeight / 50,
-                    right: sizeWidth / 20,
-                    left: sizeWidth / 20,
-                    bottom: sizeHeight / 180,
-                  ),
-                  padding: EdgeInsets.all(sizeHeight / 50),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.1),
-                        blurRadius: sizeWidth / 200,
-                        offset: Offset(0, 2.5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon((Icons.support_agent_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Help & Support"),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-                      Row(
-                        children: [
-                          Icon((Icons.contact_support)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Contact us"),
-                        ],
-                      ),
-                      SizedBox(height: sizeHeight / 120),
-
-                      Row(
-                        children: [
-                          Icon((Icons.lock_clock_outlined)),
-                          SizedBox(width: sizeWidth / 14),
-                          Text("Privacy Policy"),
-                        ],
-                      ),
-                    ],
-                  ),
+                profileFields(
+                  sizeHeight,
+                  sizeWidth,
+                  "Phone Number",
+                  Icons.phone,
+                  userphoneno!,
                 ),
+                profileFields(
+                  sizeHeight,
+                  sizeWidth,
+                  "Emergency Contact",
+                  Icons.do_disturb_on_outlined,
+                  emergency_contact!,
+                ),
+                profileFields(
+                  sizeHeight,
+                  sizeWidth,
+                  "Password",
+                  TeenyIcons.password,
+                  userpassword!,
+                ),
+                logoutbutton(sizeHeight, sizeWidth),
               ],
             ),
           ],
@@ -337,22 +294,11 @@ class BottomRoundedClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-// class TopCircleClipper extends CustomClipper<Path> {
-//   @override
-//   Path getClip(Size size) {
-//     Path path = Path();
-//     path.lineTo(0, size.height - 100);
-//     path.quadraticBezierTo(
-//       size.width / 2,
-//       size.height,
-//       size.width,
-//       size.height - 100,
-//     );
-//     path.lineTo(size.width, 0);
-//     path.close();
-//     return path;
-//   }
-
-//   @override
-//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-// }
+// InkWell(
+//                         onTap: () {
+//                           Navigator.pushNamed(
+//                             context,
+//                             '/customize-profile',
+//                             arguments: {'redirectToHome': false},
+//                           );
+//                         },
