@@ -92,6 +92,11 @@ flutter:
     - assets/images/signovax.png
     - assets/images/google.png
     - assets/images/landing_background.png
+    - assets/images/landing_background.png
+    - assets/images/signup_background.png
+    - assets/images/blur_background.png
+
+    - assets/images/facebook.png
     - assets/images/chatbot_bg.png
     - assets/images/profile.png
     - assets/images/chatbot.png

@@ -31,18 +31,69 @@ InputDecoration _inputBoxDecoration(String hintText) {
     );
     }
 
-Widget buildInputField(String hintText, {bool isPassword = false, required TextEditingController controller}) {
-    return TextField(
-      obscureText: isPassword,
-      controller: controller, // Use the controller for real-time updates
-      decoration: _inputBoxDecoration(hintText),
-      style: const TextStyle(
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w500, // Medium
-        fontSize: 15,
-        color: Colors.black, // Input text color
-      ),
-    );
+Widget buildInputField(
+  String placeholder, {
+  required TextEditingController controller,
+  bool isPassword = false,
+  required Color borderColor,
+  required Color placeholderColor,
+  required Color focusedPlaceholderColor,
+  required Color textColor,
+  required FontWeight fontWeight,
+  required Color focusedbackgroundColor,
+  required Color unfocusedbackgroundColor,
+}) {
+  return StatefulBuilder(
+    builder: (BuildContext context, StateSetter setState) {
+      bool isObscured = isPassword; // Track password visibility
+
+      return Focus(
+        child: Builder(
+          builder: (context) {
+            final hasFocus = Focus.of(context).hasFocus;
+            return TextField(
+              controller: controller,
+              obscureText: isObscured,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: fontWeight,
+              ),
+              decoration: InputDecoration(
+                hintText: placeholder,
+                hintStyle: TextStyle(
+                  color: hasFocus
+                      ? const Color(0xFF474747).withOpacity(0.5)
+                      : placeholderColor,
+                  fontWeight: fontWeight,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: borderColor),
+                ),
+                filled: true,
+                fillColor: hasFocus ? Colors.white : Colors.transparent,
+                suffixIcon: isPassword
+                    ? IconButton(
+                        icon: Icon(
+                          isObscured ? Icons.visibility_off : Icons.visibility,
+                          color:isObscured ?  const Color(0xFF474747) : Colors.red,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isObscured = !isObscured; // Toggle visibility
+                          });
+                        },
+                      )
+                    : null,
+              ),
+            );
+          },
+        ),
+      );
+    },
+  );
 }
 
 Widget buildQuestionWithInput({
