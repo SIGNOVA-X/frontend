@@ -43,7 +43,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final String message = "Emergency! Please help!";
-  // final String phoneNumber = "+917842226345";
 
   // Location variables
   Position? _currentPosition;
@@ -214,21 +213,7 @@ class _MyAppState extends State<MyApp> {
 
         return createFancyTransitionRoute(page);
       },
-
       initialRoute: '/splash',
-      // routes: {
-      //   '/splash': (context) => SplashScreen(),
-      //   '/': (context) => LandingScreen(),
-      //   '/login': (context) => LoginScreen(),
-      //   '/signup': (context) => SignupScreen(),
-      //   '/home-community': (context) => HomeCommunityScreen(),
-      //   '/communication': (context) => CommunicationScreen(_cameras),
-      //   '/profile': (context) => ProfileScreen(),
-      //   '/chatbot': (context) => ChatbotScreen(),
-      //   '/form': (context) => Formscreen(),
-      //   '/customize-profile':
-      //       (context) => CustomizeProfileScreen(redirectToHome: true),
-      // },
     );
   }
 

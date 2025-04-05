@@ -458,7 +458,7 @@ class GlassArticleCard extends StatelessWidget {
                 colors: [
                   Color.fromRGBO(225, 225, 225, 0.3),
                   Color.fromRGBO(221, 113, 4, 0.4), // Orange
-                  Colors.white,
+                  Color.fromRGBO(225, 225, 225, 0.4),
                 ],
                 radius: 1.5,
                 center: Alignment.bottomRight,

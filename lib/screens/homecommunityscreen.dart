@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -119,121 +118,119 @@ class _HomeCommunityScreenState extends State<HomeCommunityScreen> {
     double sizeHeight = MediaQuery.of(context).size.height;
     double sizeWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: sizeHeight / 20),
-        decoration: BoxDecoration(
-          // color: Color.fromRGBO(77, 42, 87, 1),
-          gradient: LinearGradient(
-            colors: [Color.fromRGBO(146, 61, 169, 1.0), Colors.black],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: sizeHeight / 4,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/community_top_bg.png'),
+                ),
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              child: ClipPath(
-                clipper: BottomRoundedClipper(),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/community_bg.png'),
+                  fit: BoxFit.cover,
+                  opacity: 0.8,
+                ),
+              ),
+            ),
+          ),
+          Column(
+            children: [
+              SizedBox(height: sizeHeight / 15),
+              Row(
+                children: [
+                  SizedBox(width: sizeWidth / 35),
+                  Text(
+                    "Welcome",
+                    style: GoogleFonts.lifeSavers(
+                      color: Colors.black,
+                      fontSize: sizeWidth / 13,
+                      letterSpacing: 0.4,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(width: sizeWidth / 25),
+                  Text(
+                    '$username!',
+                    style: GoogleFonts.lifeSavers(
+                      color: Colors.white,
+                      fontSize: sizeWidth / 13,
+                      letterSpacing: 0.4,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
+              Center(
                 child: Container(
-                  height: sizeHeight / 12,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.amber,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/profile_bg.png'),
-                      fit: BoxFit.cover,
+                  height: sizeHeight / 1.34,
+                  width: sizeWidth,
+                  margin: EdgeInsets.symmetric(
+                    vertical: sizeWidth / 45,
+                    horizontal: sizeWidth / 35,
+                  ),
+                  child: ScrollConfiguration(
+                    behavior: NoGlowScrollBehavior(),
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.only(
+                        right: sizeWidth / 30,
+                        left: sizeWidth / 30,
+                        top: sizeHeight / 90,
+                        bottom: sizeHeight / 90,
+                      ),
+                      children: [
+                        SizedBox(height: sizeHeight / 55),
+                        Container(
+                          margin: EdgeInsets.only(left: sizeWidth / 40),
+                          child: Text(
+                            "Suggestions",
+                            style: GoogleFonts.inter(
+                              color: Color.fromRGBO(225, 225, 225, 0.9),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: sizeHeight / 55),
+                        profileScroll(sizeWidth, sizeHeight, profiles),
+                        SizedBox(height: sizeHeight / 55),
+                        // communitymessages(sizeHeight, sizeWidth),
+                        GlassArticleCard(
+                          sizeHeight: MediaQuery.of(context).size.height,
+                          sizeWidth: MediaQuery.of(context).size.width,
+                        ),
+                        SizedBox(height: sizeHeight / 55),
+                        // communitymessages(sizeHeight, sizeWidth),
+                        GlassArticleCard(
+                          sizeHeight: MediaQuery.of(context).size.height,
+                          sizeWidth: MediaQuery.of(context).size.width,
+                        ),
+                        SizedBox(height: sizeHeight / 55),
+                        // communitymessages(sizeHeight, sizeWidth),
+                        GlassArticleCard(
+                          sizeHeight: MediaQuery.of(context).size.height,
+                          sizeWidth: MediaQuery.of(context).size.width,
+                        ),
+                        SizedBox(height: sizeHeight / 55),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              children: [
-                SizedBox(height: sizeHeight / 50),
-                Row(
-                  children: [
-                    SizedBox(width: sizeWidth / 35),
-                    Text(
-                      "Welcome",
-                      style: GoogleFonts.lifeSavers(
-                        color: Colors.black,
-                        fontSize: sizeWidth / 13,
-                        letterSpacing: 0.4,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    SizedBox(width: sizeWidth / 35),
-                    Text(
-                      '$username!',
-                      style: GoogleFonts.lifeSavers(
-                        color: Colors.white,
-                        fontSize: sizeWidth / 13,
-                        letterSpacing: 0.4,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ],
-                ),
-                Center(
-                  child: Container(
-                    height: sizeHeight / 1.34,
-                    width: sizeWidth,
-                    margin: EdgeInsets.symmetric(
-                      vertical: sizeWidth / 45,
-                      horizontal: sizeWidth / 35,
-                    ),
-                    child: ScrollConfiguration(
-                      behavior: NoGlowScrollBehavior(),
-                      child: ListView(
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(
-                          right: sizeWidth / 30,
-                          left: sizeWidth / 30,
-                          top: sizeHeight / 120,
-                          bottom: sizeHeight / 90,
-                        ),
-                        children: [
-                          SizedBox(height: sizeHeight / 55),
-                          Container(
-                            margin: EdgeInsets.only(left: sizeWidth / 40),
-                            child: Text(
-                              "Suggestions",
-                              style: GoogleFonts.inter(
-                                color: Color.fromRGBO(225, 225, 225, 0.9),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: sizeHeight / 55),
-                          profileScroll(sizeWidth, sizeHeight, profiles),
-                          SizedBox(height: sizeHeight / 55),
-                          communitymessages(sizeHeight, sizeWidth),
-                          // GlassArticleCard(
-                          //   sizeHeight: MediaQuery.of(context).size.height,
-                          //   sizeWidth: MediaQuery.of(context).size.width,
-                          // ),
-                          SizedBox(height: sizeHeight / 55),
-                          communitymessages(sizeHeight, sizeWidth),
-                          // GlassArticleCard(
-                          //   sizeHeight: MediaQuery.of(context).size.height,
-                          //   sizeWidth: MediaQuery.of(context).size.width,
-                          // ),
-                          SizedBox(height: sizeHeight / 55),
-                          communitymessages(sizeHeight, sizeWidth),
-                          // GlassArticleCard(
-                          //   sizeHeight: MediaQuery.of(context).size.height,
-                          //   sizeWidth: MediaQuery.of(context).size.width,
-                          // ),
-                          SizedBox(height: sizeHeight / 55),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
+      // ),
       bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );
   }

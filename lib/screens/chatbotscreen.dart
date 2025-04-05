@@ -66,6 +66,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     double sizeHeight = MediaQuery.of(context).size.height;
     return PopScope(
       canPop: false, // Disable default pop behavior
+      // ignore: deprecated_member_use
       onPopInvoked: (didPop) {
         if (!didPop) {
           Navigator.pushReplacementNamed(context, '/home-community');
@@ -211,6 +212,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
           ],
         ),
+        bottomNavigationBar: gbottomnavbar(context, 3),
       ),
     );
   }
