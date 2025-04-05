@@ -7,6 +7,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:signova/components/buttons.dart';
 import 'package:signova/components/crud.dart';
 import 'package:signova/components/navbar.dart';
+import 'package:signova/screens/landingscreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -256,7 +257,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   TeenyIcons.password,
                   userpassword!,
                 ),
-                logoutbutton(sizeHeight, sizeWidth),
+                GestureDetector(
+                  onTap: () {
+                    writeStorage('username', '');
+                    writeStorage('emergency_contact', '');
+
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder:
+                            (BuildContext context) => const LandingScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  child: logoutbutton(sizeHeight, sizeWidth),
+                ),
               ],
             ),
           ],
@@ -293,12 +308,3 @@ class BottomRoundedClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
-// InkWell(
-//                         onTap: () {
-//                           Navigator.pushNamed(
-//                             context,
-//                             '/customize-profile',
-//                             arguments: {'redirectToHome': false},
-//                           );
-//                         },
