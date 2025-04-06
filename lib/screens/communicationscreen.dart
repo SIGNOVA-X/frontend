@@ -27,6 +27,7 @@ class CommunicationScreen extends StatefulWidget {
 
 class _CommunicationScreenState extends State<CommunicationScreen>
     with TickerProviderStateMixin {
+  final List<bool> isSelected = [true, false];
   final List<bool> isSelectedLeft = [true, false];
   final List<bool> isSelectedRight = [true, false];
 
@@ -49,19 +50,19 @@ class _CommunicationScreenState extends State<CommunicationScreen>
   // tts and stt
   FlutterTts flutterTts = FlutterTts();
   String _responseText =
-      "hello i am very happy today "; // Default placeholder text
+      "Displays translated text here..."; // Default placeholder text
   // final List<bool> _playAudio = [true,false];
   bool _playAudio = true;
   bool _isListening = false;
   late sst.SpeechToText speech;
-  String _textFromSpeech = "Press the mic and start speaking...";
+  String _textFromSpeech = "Press the mic and start speaking";
 
   @override
   void initState() {
     super.initState();
     speech = sst.SpeechToText();
     _setUpCamera(_selectedCameraIndex);
-    _fetchGifUrlFromApi();
+    // _fetchGifUrlFromApi();
     initializeTts();
   }
 
@@ -69,7 +70,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     setState(() {
       _isGifLoaded = false; // Reset GIF loading state
     });
-
+    log(_textFromSpeech);
     String? gifUrl = await GifFetcher.fetchGifUrl(_textFromSpeech);
     if (gifUrl != null && mounted) {
       setState(() {
@@ -126,7 +127,8 @@ class _CommunicationScreenState extends State<CommunicationScreen>
       print('Video file created: ${videoFile.name}');
 
       // Send video to backend for processing
-      final result = await sendVideoToBackend(videoFile);
+      String result = await sendVideoToBackend(videoFile);
+      log("result obtained: $result");
       setState(() {
         _responseText = result; // Update the UI with the result
       });
@@ -188,6 +190,7 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     setState(() {
       _isListening = false;
     });
+    _fetchGifUrlFromApi();
   }
 
   @override
@@ -207,205 +210,248 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     double sizeHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.black),
-      body: Column(
-        children: [
-          Container(
-            height: sizeHeight / 2.5,
-            width: sizeWidth,
-            decoration: BoxDecoration(
-              border: BorderDirectional(
-                bottom: BorderSide(color: Colors.black, width: 1),
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black,
-                  Color.fromRGBO(64, 4, 94, 1),
-                  Color.fromRGBO(99, 0, 126, 1),
-                ],
-              ),
+      appBar: AppBar(
+        backgroundColor:
+            isSelected[0] ? Colors.black : Color.fromRGBO(35, 2, 52, 1),
+      ),
+      body: Container(
+        height: sizeHeight,
+        width: sizeWidth,
+        decoration: BoxDecoration(
+          border: BorderDirectional(
+            bottom: BorderSide(color: Colors.black, width: 1),
+          ),
+          gradient:
+              isSelected[0]
+                  ? LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black,
+                      Color.fromRGBO(64, 4, 94, 1),
+                      Color.fromRGBO(99, 0, 126, 1),
+                    ],
+                  )
+                  : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromRGBO(35, 2, 52, 1),
+                      Color.fromRGBO(118, 1, 150, 1),
+                      Colors.white,
+                    ],
+                  ),
+        ),
+        child: Column(
+          children: [
+            ToggleButtonComponent(
+              isMain: true,
+              isSelected: isSelected,
+              labels: ["From Sign", "To Sign"],
+              onPressed: (int index) {
+                setState(() {
+                  for (int i = 0; i < isSelected.length; i++) {
+                    isSelected[i] = (i == index);
+                  }
+                });
+              },
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: sizeHeight / 50),
-                ToggleButtonComponent(
-                  isSelected: isSelectedLeft,
-                  labels: ["Text", "Audio"],
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < isSelectedLeft.length; i++) {
-                        isSelectedLeft[i] = (i == index);
-                      }
-                    });
-                  },
-                ),
-                Row(
+            SizedBox(height: sizeHeight / 55),
+            isSelected[0]
+                ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CameraPreviewComponent(
-                      camcontroller: camcontroller,
-                      isCameraInitialized: _isCameraInitialized,
-                      isCameraEnabled: _isCameraEnabled,
+                    ToggleButtonComponent(
+                      isMain: false,
+                      isSelected: isSelectedLeft,
+                      labels: ["Text", "Audio"],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int i = 0; i < isSelectedLeft.length; i++) {
+                            isSelectedLeft[i] = (i == index);
+                          }
+                        });
+                      },
                     ),
                     Column(
                       children: [
-                        IconButton(
-                          onPressed: _onSwitchCamera,
-                          icon: Icon(CupertinoIcons.switch_camera_solid),
-                          color: Colors.grey,
+                        CameraPreviewComponent(
+                          camcontroller: camcontroller,
+                          isCameraInitialized: _isCameraInitialized,
+                          isCameraEnabled: _isCameraEnabled,
                         ),
-                        IconButton(
-                          onPressed: () async {
-                            onRecordButtonPressed();
-                          },
-                          icon: Icon(
-                            _isRecording
-                                ? Icons.pause_circle_filled
-                                : Icons.play_circle_fill,
-                          ),
-                          iconSize: sizeHeight / 20,
-                          color: Colors.white,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: _onSwitchCamera,
+                              icon: Icon(CupertinoIcons.switch_camera_solid),
+                              color: Colors.grey,
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                onRecordButtonPressed();
+                              },
+                              icon: Icon(
+                                _isRecording
+                                    ? Icons.pause_circle_filled
+                                    : Icons.play_circle_fill,
+                              ),
+                              iconSize: sizeHeight / 20,
+                              color: Colors.white,
+                            ),
+                            IconButton(
+                              onPressed: _toggleCamera,
+                              icon:
+                                  _isCameraEnabled
+                                      ? Icon(Iconsax.camera_bold)
+                                      : Icon(Iconsax.camera_slash_bold),
+                              color: Colors.grey,
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          onPressed: _toggleCamera,
-                          icon:
-                              _isCameraEnabled
-                                  ? Icon(Iconsax.camera_bold)
-                                  : Icon(Iconsax.camera_slash_bold),
-                          color: Colors.grey,
+                        OutputContainer(
+                          child:
+                              isSelectedLeft[0]
+                                  ? SingleChildScrollView(
+                                    child: Text(
+                                      _responseText, // Display the updated response text
+                                      style: GoogleFonts.inter(
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                  : InkWell(
+                                    onTap: () async {
+                                      setState(() {
+                                        _playAudio = !_playAudio;
+                                      });
+                                      if (_playAudio) {
+                                        await textToSpeech(
+                                          _responseText,
+                                          flutterTts,
+                                        );
+                                      }
+                                    },
+                                    child:
+                                        _playAudio
+                                            ? Icon(
+                                              Icons.multitrack_audio_outlined,
+                                              color: Colors.white,
+                                            )
+                                            : Icon(
+                                              Icons.audiotrack_rounded,
+                                              color: Colors.white,
+                                            ),
+                                  ),
                         ),
                       ],
                     ),
-                    OutputContainer(
+                  ],
+                )
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ToggleButtonComponent(
+                      isMain: false,
+                      isSelected: isSelectedRight,
+                      labels: ["Text", "Avatar"],
+                      onPressed: (int index) async {
+                        setState(() {
+                          for (int i = 0; i < isSelectedRight.length; i++) {
+                            isSelectedRight[i] = (i == index);
+                          }
+                        });
+
+                        // if (index == 1) {
+                        //   setState(() {
+                        //     _isGifLoaded = false;
+                        //   });
+                        //   await _fetchGifUrlFromApi();
+                        // }
+                      },
+                    ),
+                    Container(
                       child:
-                          isSelectedLeft[0]
-                              ? SingleChildScrollView(
-                                child: Text(
-                                  _responseText, // Display the updated response text
-                                  style: GoogleFonts.inter(color: Colors.white),
+                          isSelectedRight[0]
+                              ? Container(
+                                alignment: Alignment.center,
+                                constraints: BoxConstraints(
+                                  minHeight: sizeHeight / 10,
+                                  minWidth: sizeWidth / 1.2,
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                  vertical: sizeHeight / 30,
+                                  horizontal: sizeWidth / 10,
+                                ),
+                                padding: EdgeInsets.all(sizeHeight / 40),
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(60, 5, 88, 1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    _textFromSpeech,
+                                    style: GoogleFonts.inter(
+                                      fontSize: sizeHeight / 50,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               )
-                              : InkWell(
-                                onTap: () async {
-                                  setState(() {
-                                    _playAudio = !_playAudio;
-                                  });
-                                  if (_playAudio) {
-                                    await textToSpeech(
-                                      _responseText,
-                                      flutterTts,
-                                    );
-                                  }
-                                },
+                              : Container(
+                                height: sizeHeight / 2,
+                                width: sizeWidth / 1.2,
                                 child:
-                                    _playAudio
-                                        ? Icon(
-                                          Icons.multitrack_audio_outlined,
-                                          color: Colors.white,
+                                    _isGifLoaded
+                                        ? GifView.network(
+                                          _gifUrl,
+                                          fit: BoxFit.contain,
+                                          loop: true,
                                         )
-                                        : Icon(
-                                          Icons.audiotrack_rounded,
-                                          color: Colors.white,
+                                        : Center(
+                                          child: CircularProgressIndicator(),
                                         ),
                               ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.white,
-                  Color.fromRGBO(208, 185, 219, 1),
-                  Color.fromRGBO(99, 0, 126, 1),
-                ],
-              ),
-            ),
-            height: sizeHeight / 2.49,
-            width: sizeWidth,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ToggleButtonComponent(
-                  isSelected: isSelectedRight,
-                  labels: ["Text", "Avatar"],
-                  onPressed: (int index) async {
-                    setState(() {
-                      for (int i = 0; i < isSelectedRight.length; i++) {
-                        isSelectedRight[i] = (i == index);
-                      }
-                    });
-
-                    if (index == 1) {
-                      setState(() {
-                        _isGifLoaded = false;
-                      });
-                      await _fetchGifUrlFromApi();
-                    }
-                  },
-                ),
-                Container(
-                  child:
-                      isSelectedRight[0]
-                          ? Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(
-                              vertical: sizeHeight / 30,
-                              horizontal: sizeWidth / 10,
-                            ),
-                            padding: EdgeInsets.all(sizeHeight / 40),
-                            child: SingleChildScrollView(
-                              child: Text(
-                                _textFromSpeech,
-                                style: GoogleFonts.inter(
-                                  fontSize: sizeHeight / 50,
+                    SizedBox(height: sizeHeight / 30),
+                    GestureDetector(
+                      onTap: _isListening ? _stopListening : _startListening,
+                      child:
+                          _isListening
+                              ? Container(
+                                height: sizeHeight / 12,
+                                padding: EdgeInsets.all(sizeWidth / 30),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Icon(
+                                  Iconsax.microphone_slash_1_bold,
+                                  size: sizeHeight / 20,
+                                  color: Colors.red,
+                                ),
+                              )
+                              : Container(
+                                height: sizeHeight / 12,
+                                padding: EdgeInsets.all(sizeWidth / 30),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: Icon(
+                                  Iconsax.microphone_bold,
+                                  size: sizeHeight / 20,
+                                  color: Colors.black,
                                 ),
                               ),
-                            ),
-                          )
-                          : Container(
-                            height: sizeHeight / 4.6,
-                            width: sizeWidth / 3,
-                            child:
-                                _isGifLoaded
-                                    ? GifView.network(
-                                      _gifUrl,
-                                      fit: BoxFit.contain,
-                                      loop: true,
-                                    )
-                                    : Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                          ),
+                    ),
+                    SizedBox(height: sizeHeight / 30),
+                  ],
                 ),
-                SizedBox(height: sizeHeight / 30),
-                GestureDetector(
-                  onTap: _isListening ? _stopListening : _startListening,
-                  child:
-                      _isListening
-                          ? Icon(
-                            Iconsax.microphone_slash_1_bold,
-                            size: sizeHeight / 20,
-                            color: Colors.red,
-                          )
-                          : Icon(
-                            Iconsax.microphone_bold,
-                            size: sizeHeight / 20,
-                            color: Colors.black,
-                          ),
-                ),
-                SizedBox(height: sizeHeight / 30),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: gbottomnavbar(context, _selectedIndex),
     );

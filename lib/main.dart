@@ -56,6 +56,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     writeStorage('emergency_contact', '+917842226345');
     _getCurrentLocation();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeShakeDetector();
+    });
   }
 
   //! shake detector
@@ -64,13 +67,13 @@ class _MyAppState extends State<MyApp> {
     detector = ShakeDetector.autoStart(
       shakeCountResetTime: 1000,
       minimumShakeCount: 2,
-      shakeThresholdGravity: 2.7,
+      shakeThresholdGravity: 1.5,
       onShake: () {
         shakeCount++;
         log("shake detected!: $shakeCount");
         if (shakeCount >= 2) {
           log("here");
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
             log("here for toast");
             final currentContext = navigatorKey.currentContext;
             log(currentContext.toString());
@@ -82,7 +85,8 @@ class _MyAppState extends State<MyApp> {
                 backgroundColor: Colors.white,
                 type: ToastificationType.info,
               );
-              sendEmergencySMS();
+              await sendEmergencySMS();
+              shakeCount = 0;
             } else {
               log("some error in context");
             }
@@ -115,6 +119,13 @@ class _MyAppState extends State<MyApp> {
         message: locationMessage,
       );
       log("SMS Sent: $locationMessage");
+      toastification.show(
+        context: navigatorKey.currentContext!,
+        title: Text("SMS sent to emergency contact!"),
+        autoCloseDuration: Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        type: ToastificationType.info,
+      );
     } catch (error) {
       log("Error sending SMS: $error");
     }
@@ -153,7 +164,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // initialize shake +  SMS function
-    _initializeShakeDetector();
+    // _initializeShakeDetector();
   }
 
   @override

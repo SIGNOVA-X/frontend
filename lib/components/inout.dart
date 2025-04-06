@@ -13,14 +13,17 @@ class OutputContainer extends StatelessWidget {
     double sizeWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      height: MediaQuery.of(context).size.height / 3.7,
-      width: MediaQuery.of(context).size.height / 30,
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.height / 55,
+      ),
+      height: MediaQuery.of(context).size.height / 3.5,
+      width: MediaQuery.of(context).size.width / 1.2,
       padding: EdgeInsets.all(sizeHeight / 50),
-      margin: EdgeInsets.all(sizeHeight / 70),
       constraints: BoxConstraints(
         minWidth: sizeWidth / 2.9,
-        maxWidth: sizeWidth / 2.3,
+        maxWidth: sizeWidth,
       ),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Color.fromRGBO(0, 0, 0, 1),
         // border: Border.all(color: Colors.black, width: 0.4),

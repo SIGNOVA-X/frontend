@@ -226,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen>
                   String? favoritePerson;
                   if (formData != null) {
                     favoritePerson =
-                        formData['favoritePerson'] ?? "+917842226345";
+                        formData['emergency_contact'] ?? "+917842226345";
                     log("Favorite Person: $favoritePerson");
                   } else {
                     log("No form data found.");

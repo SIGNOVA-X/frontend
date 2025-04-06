@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         username = userData['name'] ?? 'Guest';
         useremail = userId;
         userpassword = pass;
-        emergency_contact = emergency;
+        emergency_contact = formData['emergency_contact'];
         userphoneno = formData['phone'] ?? "+01 234 567 89";
         avatarJson = userData['avatar'] ?? "assests/images/profile.png";
         userbio =

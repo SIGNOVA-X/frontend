@@ -291,6 +291,7 @@ Widget profileScroll(
 
 class ToggleButtonComponent extends StatelessWidget {
   final List<bool> isSelected;
+  final bool isMain;
   final List<String> labels;
   final Function(int) onPressed;
   final double? fontSize;
@@ -298,6 +299,7 @@ class ToggleButtonComponent extends StatelessWidget {
 
   const ToggleButtonComponent({
     Key? key,
+    required this.isMain,
     required this.isSelected,
     required this.labels,
     required this.onPressed,
@@ -312,10 +314,10 @@ class ToggleButtonComponent extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 6,
       ),
       color: Colors.white,
-      selectedColor: Colors.white,
-      fillColor: Color.fromRGBO(99, 0, 126, 1),
+      selectedColor: isMain ? Colors.black : Colors.white,
+      fillColor: isMain ? Colors.white : Color.fromRGBO(99, 0, 126, 1),
       renderBorder: true,
-      borderWidth: 1,
+      borderWidth: isMain ? 2 : 1,
       borderColor: Colors.white,
       selectedBorderColor: Colors.white,
       borderRadius: BorderRadius.circular(15.0),

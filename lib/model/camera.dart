@@ -90,10 +90,10 @@ class CameraPreviewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.height / 85,
+        horizontal: MediaQuery.of(context).size.height / 55,
       ),
-      height: MediaQuery.of(context).size.height / 3.7,
-      width: MediaQuery.of(context).size.height / 5.8,
+      height: MediaQuery.of(context).size.height / 3.5,
+      width: MediaQuery.of(context).size.width / 1.2,
       child:
           isCameraInitialized && isCameraEnabled
               ? CameraPreview(camcontroller!)
