@@ -147,15 +147,20 @@ Start by creating your account or logging in with your existing credentials.
 
 ---
 
-### 🧑‍🤝‍🧑 Step 2: Real-Time Split Screen Communication
-Head over to the **Live Communication** section.
+### 🧑‍🤝‍🧑 Step 2: ## 🔄 Real-Time Split Screen Communication
 
-The screen is divided into two parts:
+Navigate to the **Live Communication** section of the app.
+The screen is split **vertically** into two interactive sections to facilitate seamless two-way communication between deaf/mute and hearing users:
 
-- 👋 **Left Side (Deaf/Mute User):** Show your sign language gestures to the camera. SIGNOVA-X captures and converts them into real-time English text using AI.
-- 🗣️ **Right Side (Hearing User):** The other user speaks into the mic. Their voice is transcribed and translated into sign language through an animated avatar.
+### 🔼 Upper Section (Deaf/Mute User)
+- 📹 The user shows **sign language gestures** to the camera.
+- 🤖 **SIGNOVA-X** uses AI to **capture and convert** these gestures into **real-time English text**.
+- ✅ Enables users with hearing/speaking impairments to communicate naturally.
 
-This enables smooth, real-time two-way communication regardless of hearing ability.
+### 🔽 Lower Section (Hearing User)
+- 🎙️ The hearing user can **speak into the microphone** or type text.
+- 🧠 Their **speech or text is transcribed** and translated into **sign language** via an **animated avatar**.
+- 🤝 Ensures the message is understood by deaf/mute users in a visual, accessible manner.
 
 ---
 
