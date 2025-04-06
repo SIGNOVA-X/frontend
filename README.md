@@ -62,7 +62,31 @@ All user interactions—including sign, voice, and location data—are securely 
 
 
 ---
+<h3 align="center">App Demo</h3>
 
+<p align="center">
+  <img src="assets/gifs/splash_screen.gif" alt="Sign Up" width="200"/>
+  <img src="assets/gifs/landing_page.gif" alt="Home" width="200"/>
+  <img src="assets/gifs/sign_up.gif" alt="Split Screen" width="200"/>
+  <img src="assets/gifs/login_screen.gif" alt="Chatbot" width="200"/>
+</p>
+
+---
+<p align="center">
+  <img src="assets/gifs/audio_to_sign.gif" alt="Sign Up" width="200"/>
+  <img src="assets/gifs/audio_to_text.gif" alt="Home" width="200"/>
+  <img src="assets/gifs/sign_to_text.gif" alt="Split Screen" width="200"/>
+  <img src="assets/gifs/community_page.gif" alt="" width="200"/>
+</p>
+
+---
+<p align="center">
+  <img src="assets/gifs/customize_avatar.gif" alt="Sign Up" width="200"/>
+  <img src="assets/gifs/chatbot.gif" alt="Home" width="200"/>
+  <img src="assets/gifs/profile_page_final-ezgif.com-video-to-gif-converter.gif" alt="Split Screen" width="200"/>
+</p>
+
+---
 ##  Future Scope of SIGNOVA-X
 
 At **SIGNOVA-X**, we’re committed to pushing the boundaries of accessibility, inclusion, and meaningful human connection. Below are the upcoming features and innovations we plan to integrate to further empower the deaf and mute community:
@@ -147,20 +171,25 @@ Start by creating your account or logging in with your existing credentials.
 
 ---
 
-### 🧑‍🤝‍🧑 Step 2: ## 🔄 Real-Time Split Screen Communication
+### 🧑‍🤝‍🧑 Step 2:  🔄 Real-Time Split Screen Communication
+Navigate to the **Live Communication** section of the app to experience **real-time two-way interaction** between deaf/mute and hearing users. This section is powered by advanced AI and gesture recognition technology and now features **two smart toggle options**:
 
-Navigate to the **Live Communication** section of the app.
-The screen is split **vertically** into two interactive sections to facilitate seamless two-way communication between deaf/mute and hearing users:
+### 🖐️ From Sign (Sign Language ➡️ Text)
 
-### 🔼 Upper Section (Deaf/Mute User)
-- 📹 The user shows **sign language gestures** to the camera.
-- 🤖 **SIGNOVA-X** uses AI to **capture and convert** these gestures into **real-time English text**.
-- ✅ Enables users with hearing/speaking impairments to communicate naturally.
+- 🎥 Upon selecting the **"From Sign"** button, the **device camera opens**.
+- 🔼 The **upper half** of the screen displays **live video input** of the user's hand gestures.
+- 🧠 Using **AI models powered by MediaPipe & OpenCV**, SIGNOVA-X **analyzes gestures** in real time.
+- 🔽 The **lower half** shows the **translated English text** corresponding to the recognized signs.
+- ✅ Helps users with hearing/speech impairments **express themselves naturally** through sign gestures.
 
-### 🔽 Lower Section (Hearing User)
-- 🎙️ The hearing user can **speak into the microphone** or type text.
-- 🧠 Their **speech or text is transcribed** and translated into **sign language** via an **animated avatar**.
-- 🤝 Ensures the message is understood by deaf/mute users in a visual, accessible manner.
+
+### 📢 To Sign (Text/Speech ➡️ Sign Language)
+
+- 💬 The user can either **type a message** or **speak into the microphone**.
+- 🧠 Input is processed through **speech-to-text** (if spoken) or parsed (if typed).
+- 🧍‍♂️ An **animated avatar** visually replicates the message in **sign language**.
+- 👁️‍🗨️ Enables deaf/mute users to **visually receive messages** in a fully accessible format.
+- 🔁 Bridges the communication gap in a **seamless, inclusive, and intuitive** manner.
 
 ---
 
