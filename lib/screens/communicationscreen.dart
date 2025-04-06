@@ -62,7 +62,6 @@ class _CommunicationScreenState extends State<CommunicationScreen>
     super.initState();
     speech = sst.SpeechToText();
     _setUpCamera(_selectedCameraIndex);
-    // _fetchGifUrlFromApi();
     initializeTts();
   }
 
