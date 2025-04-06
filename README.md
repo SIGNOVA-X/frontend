@@ -258,8 +258,8 @@ Python 3.10.x
 ### 📥 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dis1309/signova-x-app.git
-cd signova-x-app
+git clone https://github.com/SIGNOVA-X/frontend.git
+cd backend
 ```
 ### 📁 2. Navigate to the Frontend Folder
 ```bash
@@ -271,7 +271,7 @@ flutter pub get
 ```
 ### ▶️ 4. Run the Flutter App
 ```bash
-▶️ 4. Run the Flutter App
+ Run the Flutter App
 ```
 ## ✅ Conclusion
 
