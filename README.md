@@ -259,11 +259,27 @@ Python 3.10.x
 
 ```bash
 git clone https://github.com/SIGNOVA-X/frontend.git
-cd backend
 ```
 ### 📁 2. Navigate to the Frontend Folder
 ```bash
 cd frontend
+```
+## 🛠️ Environment Setup (.env)
+
+To run the project locally, create a `.env` file in the root directory and add the following environment variables:
+You can generate the google Generative AI API Key from [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
+For Pinata and Nagrok setup look at the backend repo
+
+```env
+# 🔑 Google Generative AI API Key
+GENERATIVE_AI_APIKEY=""
+
+# 📦 Pinata (IPFS) API Keys
+PINATA_API_KEY=""
+PINATA_SECRET_API_KEY=""
+
+# 🌐 Ngrok Public URL for Backend Access
+NGROK_URL=""
 ```
 ### 🛠️ 3. Get Flutter Dependencies
 ```bash
