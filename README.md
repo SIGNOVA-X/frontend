@@ -1,5 +1,5 @@
-# 🚀 SIGNOVA-X – Bridging the Communication Gap for the Deaf and Mute Community
-
+# 🚀 SIGNOVA-X 
+<img src="assets/images/app_icon.png" alt="SIGNOVA-X Icon" width="300" height="300"/>
 It is an inclusive AI-powered application built to bridge the communication gap between the deaf/mute community and the hearing population. It enables real-time interaction by converting sign language into text and vice versa using deep learning, computer vision, and gesture recognition. Beyond communication, the app also offers AI-based friend suggestions based on user profiles, a motivational chatbot powered by Google Gemini for emotional support, and an SOS emergency feature. SIGNOVA-X is designed to empower, connect, and support individuals who rely on sign language—making digital communication more accessible, human, and inclusive.
 
 [View our Figma Design](https://www.figma.com/design/8J4MSXWVIo1FAwGNq8wZAv/Solution_Challenge_Design?node-id=0-1&p=f&t=OVofSItuGbXo5Z4e-0)
@@ -13,7 +13,7 @@ Despite advancements in technology, millions of deaf and mute individuals around
 <img src="assets/images/piechart.jpeg" alt="Pie chart showing leading causes of hearing loss worldwide including Aging (35%), Illness (20%), Noise (15%), Congenital (15%), and Injury or Drugs (15%)" width="500" height="400"/>
 
 <img src="assets/images/barchart.jpeg" alt="Your alt text here" width="500" height="400"/>
-
+The communication gap faced by deaf and dumb individuals significantly impacts their mental health, often leading to feelings of isolation, frustration, and low self-worth. Due to the lack of accessible communication tools and inclusive environments, around 72% of deaf and dumb individuals tend to avoid social gatherings. This avoidance stems from the fear of being misunderstood, excluded, or unable to express themselves freely. Over time, this social withdrawal contributes to increased loneliness, anxiety, and even depression, as these individuals are unable to form meaningful connections or participate fully in society. The absence of inclusive communication solutions not only limits their opportunities but also affects their emotional and psychological well-being.
 
 Traditional methods like text messaging or human interpreters are not always accessible, affordable, or real-time. This communication gap not only limits personal and professional opportunities but also impacts emotional well-being and mental health.
 
