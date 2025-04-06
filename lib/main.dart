@@ -211,13 +211,13 @@ class _MyAppState extends State<MyApp> {
             throw Exception('Unknown route: ${settings.name}');
         }
 
-        return createFancyTransitionRoute(page);
+        return createTransitionRoute(page);
       },
       initialRoute: '/splash',
     );
   }
 
-  Route createFancyTransitionRoute(Widget page) {
+  Route createTransitionRoute(Widget page) {
     return PageRouteBuilder(
       transitionDuration: Duration(milliseconds: 900),
       pageBuilder: (context, animation, secondaryAnimation) => page,
